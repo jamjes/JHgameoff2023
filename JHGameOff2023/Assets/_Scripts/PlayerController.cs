@@ -5,28 +5,40 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IScoreSystem
 {
-    public Rigidbody2D Rb;
-    public float JumpVelocity;
-    public PlayerHUD Hud;
-    public int Direction = 1;
-    public int Mana;
+    #region Variables
 
-    //public float DefaultGravityScale = 3;
-    //public float FallingGravityScale = 5;
-    public float FallClamp = -18;
+    [Header("Unity Components")]
+    private Rigidbody2D _rigidBody2D; //Unity's Built-in Physics Manager
 
-    public Transform Feet;
+    [Header("Custom Components")]
+    private PlayerHUD _playerHUD; //Display Player Attributes on Canvas
+    private CollisionHandler _collisionHandler; //Custom collision events
 
-    public float JumpButtonHeldTimeMax = .3f;
-    public float JumpTimeRef = 0;
-    public bool isJumping = false;
-    public float Speed;
+    [Header("Player Attributes")]
+    private int _mana;
+    private int _direction = 1;
+    [SerializeField] private float _speed = 6;
+    [SerializeField] private float _jumpVelocity = 15;
+    [SerializeField] private Transform _feet; //Reference to player feet position
 
-    public CollisionHandler col;
+    [Header("Player Physics")]
+    [SerializeField] private float _maxFallVelocity = -18; //Maximum value applied to player negative y velocity
+    [SerializeField] private float _jumpButtonHeldTimeMax = .3f; //Time jump button can be held to increase positive y velocity
+    private float _jumpTimeRef = 0;
+    private bool _isJumping = false;
+
+    #endregion
 
     private void Start()
     {
-        //Rb.gravityScale = DefaultGravityScale;
+        Init();
+    }
+    
+    private void Init()
+    {
+        _rigidBody2D = GetComponent<Rigidbody2D>();
+        _playerHUD = GetComponent<PlayerHUD>();
+        _collisionHandler = GetComponent<CollisionHandler>();
     }
 
     private void Update()
@@ -34,53 +46,48 @@ public class PlayerController : MonoBehaviour, IScoreSystem
         
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
-            Direction = -1;
+            _direction = -1;
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
-            Direction = 1;
+            _direction = 1;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && col.IsGrounded())
+        if (Input.GetKeyDown(KeyCode.Space) && _collisionHandler.IsGrounded()) //If Jump key is triggered and player is overlapping with Ground
         {
-            isJumping = true;
+            _isJumping = true;
         }
 
-        /*if (Rb.velocity.y >= 0 && Rb.gravityScale != DefaultGravityScale)
+        if (_rigidBody2D.velocity.y < _maxFallVelocity) //Applies when player negative y velocity is more than custom clamp value
         {
-            Rb.gravityScale = DefaultGravityScale;
-        }
-        else if (Rb.velocity.y < 0 && Rb.gravityScale != FallingGravityScale)
-        {
-            Rb.gravityScale = FallingGravityScale;
-        }*/
-
-        if (Rb.velocity.y < FallClamp)
-        {
-            Rb.velocity = new Vector2(Rb.velocity.x, FallClamp);
+            _rigidBody2D.velocity = new Vector2(_rigidBody2D.velocity.x, _maxFallVelocity); //Reset y velocity to custom clamp value
         }
 
-        if (isJumping)
+        if (_isJumping)
         {
-            Rb.velocity = new Vector2(Rb.velocity.x, JumpVelocity);
-            JumpTimeRef += Time.deltaTime;
+            _rigidBody2D.velocity = new Vector2(_rigidBody2D.velocity.x, _jumpVelocity);
+            _jumpTimeRef += Time.deltaTime; //Run jump held timer
         }
 
-        if (Input.GetKeyUp(KeyCode.Space) || JumpTimeRef > JumpButtonHeldTimeMax)
+        if (Input.GetKeyUp(KeyCode.Space) || _jumpTimeRef > _jumpButtonHeldTimeMax) //If player releases Jump button OR player has held Jump button for max time
         {
-            isJumping = false;
-            JumpTimeRef = 0;
+            _isJumping = false;
+            _jumpTimeRef = 0; //Reset jump held timer
         }
     }
 
     private void FixedUpdate()
     {
-        Rb.velocity = new Vector2(Speed * Direction, Rb.velocity.y);
+        _rigidBody2D.velocity = new Vector2(_speed * _direction, _rigidBody2D.velocity.y);
     }
+
+    #region Interface Function
 
     public void Increment(int amount)
     {
-        Mana += amount;
-        Hud.UpdateManaValue(Mana);
+        _mana += amount;
+        _playerHUD.UpdateManaValue(_mana);
     }
+
+    #endregion
 }
