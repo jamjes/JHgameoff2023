@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IScoreSystem
 {
     public Rigidbody2D Rb;
     public float JumpVelocity;
+    public PlayerHUD Hud;
+    public int Direction = 1;
+    public int Mana;
 
     //public float DefaultGravityScale = 3;
     //public float FallingGravityScale = 5;
@@ -28,6 +31,16 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        {
+            Direction = -1;
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        {
+            Direction = 1;
+        }
+
         if (Input.GetKeyDown(KeyCode.Space) && col.IsGrounded())
         {
             isJumping = true;
@@ -62,6 +75,12 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Rb.velocity = new Vector2(Speed, Rb.velocity.y);
+        Rb.velocity = new Vector2(Speed * Direction, Rb.velocity.y);
+    }
+
+    public void Increment(int amount)
+    {
+        Mana += amount;
+        Hud.UpdateManaValue(Mana);
     }
 }
