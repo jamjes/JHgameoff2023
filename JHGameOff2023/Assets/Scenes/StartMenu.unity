@@ -584,7 +584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trigger: 32
-  targetScene: Main
+  targetScene: TechDemo
 --- !u!1 &1706620252
 GameObject:
   m_ObjectHideFlags: 0
