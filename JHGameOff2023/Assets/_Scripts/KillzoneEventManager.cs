@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EventManager : MonoBehaviour
+public class KillzoneEventManager : MonoBehaviour
 {
     public delegate void Death();
     public static event Death OnDeathEnter;

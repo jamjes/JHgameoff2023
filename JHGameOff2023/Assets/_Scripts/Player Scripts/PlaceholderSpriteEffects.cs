@@ -8,12 +8,12 @@ public class PlaceholderSpriteEffects : MonoBehaviour
     
     private void OnEnable()
     {
-        EventManager.OnDeathEnter += SetColorToRed;
+        KillzoneEventManager.OnDeathEnter += SetColorToRed;
     }
 
     private void OnDisable()
     {
-        EventManager.OnDeathEnter -= SetColorToRed;
+        KillzoneEventManager.OnDeathEnter -= SetColorToRed;
     }
 
     private void Start()
