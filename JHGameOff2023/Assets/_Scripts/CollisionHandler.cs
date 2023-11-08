@@ -15,4 +15,13 @@ public class CollisionHandler : MonoBehaviour
         grounded = raycastHit.collider != null;
         return grounded;
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Mana")
+        {
+            GetComponent<PlayerController>().Increment(1);
+            Destroy(collision.gameObject);
+        }
+    }
 }

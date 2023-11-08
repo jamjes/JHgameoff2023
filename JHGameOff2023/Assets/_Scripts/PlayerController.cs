@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour, IScoreSystem
     [Header("Player Attributes")]
     private int _mana;
     private int _direction = 1;
+    private bool _move = false;
     [SerializeField] private float _speed = 6;
     [SerializeField] private float _jumpVelocity = 15;
     [SerializeField] private Transform _feet; //Reference to player feet position
@@ -29,6 +30,16 @@ public class PlayerController : MonoBehaviour, IScoreSystem
 
     #endregion
 
+    private void OnEnable()
+    {
+        EventManager.OnDeathEnter += DisableMovement;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.OnDeathEnter -= DisableMovement;
+    }
+
     private void Start()
     {
         Init();
@@ -39,6 +50,7 @@ public class PlayerController : MonoBehaviour, IScoreSystem
         _rigidBody2D = GetComponent<Rigidbody2D>();
         _playerHUD = GetComponent<PlayerHUD>();
         _collisionHandler = GetComponent<CollisionHandler>();
+        _move = true;
     }
 
     private void Update()
@@ -78,15 +90,31 @@ public class PlayerController : MonoBehaviour, IScoreSystem
 
     private void FixedUpdate()
     {
-        _rigidBody2D.velocity = new Vector2(_speed * _direction, _rigidBody2D.velocity.y);
+        if (_move)
+        {
+            _rigidBody2D.velocity = new Vector2(_speed * _direction, _rigidBody2D.velocity.y);
+        }
+        
     }
 
-    #region Interface Function
+    #region Interface Functions
 
     public void Increment(int amount)
     {
         _mana += amount;
         _playerHUD.UpdateManaValue(_mana);
+    }
+
+    #endregion
+
+    #region Event Functions
+
+    private void DisableMovement()
+    {
+        _speed = 0;
+        _direction = 0;
+        _rigidBody2D.gravityScale = 0;
+        _rigidBody2D.velocity = Vector2.zero;
     }
 
     #endregion

@@ -184,12 +184,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 191363409}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0.00000071525574, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 208991258}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &208991257
 GameObject:
@@ -233,19 +233,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 208991257}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
+  m_Script: {fileID: 11500000, guid: 6ad980451443d70438faac0bc6c235a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 0, z: -10}
+  m_TrackedObjectOffset: {x: 0, y: 0, z: 0}
+  m_LookaheadTime: 0.4
+  m_LookaheadSmoothing: 0.2
+  m_LookaheadIgnoreY: 1
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
-  m_AngularDampingMode: 0
-  m_PitchDamping: 0
-  m_YawDamping: 0
-  m_RollDamping: 0
-  m_AngularDamping: 0
+  m_TargetMovementOnly: 1
+  m_ScreenX: 0.5
+  m_ScreenY: 0.5
+  m_CameraDistance: 10
+  m_DeadZoneWidth: 0.05
+  m_DeadZoneHeight: 1
+  m_DeadZoneDepth: 0
+  m_UnlimitedSoftZone: 0
+  m_SoftZoneWidth: 0.8
+  m_SoftZoneHeight: 1
+  m_BiasX: 0
+  m_BiasY: 0
+  m_CenterOnActivate: 1
+  m_GroupFramingMode: 2
+  m_AdjustmentMode: 0
+  m_GroupFramingSize: 0.8
+  m_MaxDollyIn: 5000
+  m_MaxDollyOut: 5000
+  m_MinimumDistance: 1
+  m_MaximumDistance: 5000
+  m_MinimumFOV: 3
+  m_MaximumFOV: 60
+  m_MinimumOrthoSize: 1
+  m_MaximumOrthoSize: 5000
 --- !u!114 &208991260
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -320,7 +341,7 @@ Transform:
   - {fileID: 1481220171}
   - {fileID: 642992443}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &356578106
 BoxCollider2D:
@@ -381,14 +402,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58a2e396f947e634c8cfc30c8081fce6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 6
+  _speed: 3
+  _jumpVelocity: 15
   _feet: {fileID: 642992443}
-  Direction: 1
-  JumpVelocity: 12
-  FallClamp: -18
-  JumpButtonHeldTimeMax: 0.3
-  JumpTimeRef: 0
-  isJumping: 0
+  _maxFallVelocity: -18
+  _jumpButtonHeldTimeMax: 0.3
 --- !u!114 &356578109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -595,6 +613,7 @@ GameObject:
   - component: {fileID: 867074440}
   - component: {fileID: 867074439}
   - component: {fileID: 867074438}
+  - component: {fileID: 867074442}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -676,13 +695,27 @@ RectTransform:
   - {fileID: 779055863}
   - {fileID: 1896543966}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &867074442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 867074437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f586ff30f4e56e042b72fa33d09f9c17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trigger: 0
+  targetScene: 
 --- !u!1 &1330836487
 GameObject:
   m_ObjectHideFlags: 0
@@ -693,7 +726,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1330836488}
   - component: {fileID: 1330836489}
-  - component: {fileID: 1330836490}
+  - component: {fileID: 1330836491}
   m_Layer: 0
   m_Name: KillZone
   m_TagString: Untagged
@@ -741,7 +774,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1330836490
+--- !u!114 &1330836491
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -750,7 +783,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1330836487}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3e869b0a63fb314cb8c73f4a1e1734b, type: 3}
+  m_Script: {fileID: 11500000, guid: cd221afcae6d6c648ba9ff1f77c0245f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1481220170
@@ -763,6 +796,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1481220171}
   - component: {fileID: 1481220172}
+  - component: {fileID: 1481220173}
   m_Layer: 0
   m_Name: PlayerGFX
   m_TagString: Untagged
@@ -834,6 +868,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1481220173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481220170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 483ea5af70f44534cbba9589c6dad938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1671720590
 GameObject:
   m_ObjectHideFlags: 0
@@ -914,7 +960,7 @@ Transform:
   m_LocalScale: {x: 70, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1671720593
 BoxCollider2D:
@@ -1020,7 +1066,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1765182287}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0.00000071525574, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1075,7 +1121,7 @@ PrefabInstance:
     - target: {fileID: 4306928639591181190, guid: 728ab0a0431912e498687f90f618e63a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4306928639591181190, guid: 728ab0a0431912e498687f90f618e63a,
         type: 3}
@@ -1193,7 +1239,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1896543965
 GameObject:
@@ -1343,7 +1389,7 @@ PrefabInstance:
     - target: {fileID: 4306928639591181190, guid: 728ab0a0431912e498687f90f618e63a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4306928639591181190, guid: 728ab0a0431912e498687f90f618e63a,
         type: 3}
