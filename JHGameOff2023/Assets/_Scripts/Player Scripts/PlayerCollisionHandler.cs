@@ -7,13 +7,22 @@ public class PlayerCollisionHandler : MonoBehaviour
     public float ExtraHeight = 1f;
     public BoxCollider2D Bc;
     public LayerMask GroundLayer;
-    public bool grounded = false;
+    public LayerMask WallLayer;
+    public bool WallJump;
 
     public bool IsGrounded()
     {
+        bool grounded;
         RaycastHit2D raycastHit = Physics2D.BoxCast(Bc.bounds.center, Bc.bounds.size, 0f, Vector2.down, ExtraHeight, GroundLayer);
         grounded = raycastHit.collider != null;
         return grounded;
+    }
+
+    public bool CanWallJump()
+    {
+        RaycastHit2D raycastHit = Physics2D.BoxCast(Bc.bounds.center, Bc.bounds.size, 0f, Vector2.right, ExtraHeight, WallLayer);
+        WallJump = raycastHit.collider != null;
+        return WallJump;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

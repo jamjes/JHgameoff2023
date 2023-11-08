@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour, IScoreSystem
     private bool _move = false;
     [SerializeField] private float _speed = 6;
     [SerializeField] private float _jumpVelocity = 15;
-    [SerializeField] private Transform _feet; //Reference to player feet position
+    //[SerializeField] private Transform _feet; //Reference to player feet position
 
     [Header("Player Physics")]
     [SerializeField] private float _maxFallVelocity = -18; //Maximum value applied to player negative y velocity
@@ -55,14 +55,26 @@ public class PlayerController : MonoBehaviour, IScoreSystem
 
     private void Update()
     {
+
         
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        
+        if (Input.GetKeyDown(KeyCode.A))
         {
             _direction = -1;
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D))
         {
             _direction = 1;
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            Debug.Log("Direction = 0");
+            _direction = 0;
+        }
+
+        if (Input.GetKeyDown(KeyCode.W) && _collisionHandler.CanWallJump())
+        {
+            _direction = 0;
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && _collisionHandler.IsGrounded()) //If Jump key is triggered and player is overlapping with Ground
@@ -90,7 +102,11 @@ public class PlayerController : MonoBehaviour, IScoreSystem
 
     private void FixedUpdate()
     {
-        if (_move)
+        if (_direction == 0 && _collisionHandler.CanWallJump())
+        {
+            _rigidBody2D.velocity = new Vector2(_rigidBody2D.velocity.x, _speed * 2);
+        }
+        else
         {
             _rigidBody2D.velocity = new Vector2(_speed * _direction, _rigidBody2D.velocity.y);
         }
