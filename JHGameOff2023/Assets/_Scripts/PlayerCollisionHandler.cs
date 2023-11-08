@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollisionHandler : MonoBehaviour
+public class PlayerCollisionHandler : MonoBehaviour
 {
     public float ExtraHeight = 1f;
     public BoxCollider2D Bc;

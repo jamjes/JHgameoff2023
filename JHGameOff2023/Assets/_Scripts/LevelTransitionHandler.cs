@@ -10,12 +10,12 @@ public class LevelTransitionHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnDeathEnter += Restart;
+        KillzoneEventManager.OnDeathEnter += Restart;
     }
 
     private void OnDisable()
     {
-        EventManager.OnDeathEnter -= Restart;
+        KillzoneEventManager.OnDeathEnter -= Restart;
     }
 
     void Update()

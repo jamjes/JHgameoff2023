@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour, IScoreSystem
 
     [Header("Custom Components")]
     private PlayerHUD _playerHUD; //Display Player Attributes on Canvas
-    private CollisionHandler _collisionHandler; //Custom collision events
+    private PlayerCollisionHandler _collisionHandler; //Custom collision events
 
     [Header("Player Attributes")]
     private int _mana;
@@ -32,12 +32,12 @@ public class PlayerController : MonoBehaviour, IScoreSystem
 
     private void OnEnable()
     {
-        EventManager.OnDeathEnter += DisableMovement;
+        KillzoneEventManager.OnDeathEnter += DisableMovement;
     }
 
     private void OnDisable()
     {
-        EventManager.OnDeathEnter -= DisableMovement;
+        KillzoneEventManager.OnDeathEnter -= DisableMovement;
     }
 
     private void Start()
@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour, IScoreSystem
     {
         _rigidBody2D = GetComponent<Rigidbody2D>();
         _playerHUD = GetComponent<PlayerHUD>();
-        _collisionHandler = GetComponent<CollisionHandler>();
+        _collisionHandler = GetComponent<PlayerCollisionHandler>();
         _move = true;
     }
 
