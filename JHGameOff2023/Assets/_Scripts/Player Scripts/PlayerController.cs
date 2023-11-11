@@ -55,9 +55,6 @@ public class PlayerController : MonoBehaviour, IScoreSystem
 
     private void Update()
     {
-
-        
-        
         if (Input.GetKeyDown(KeyCode.A))
         {
             _direction = -1;
