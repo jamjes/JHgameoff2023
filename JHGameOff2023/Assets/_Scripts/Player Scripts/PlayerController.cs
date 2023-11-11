@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour, IScoreSystem
     [SerializeField] private float _jumpButtonHeldTimeMax = .3f; //Time jump button can be held to increase positive y velocity
     private float _jumpTimeRef = 0;
     private bool _isJumping = false;
+    private bool isWallJumping = false;
 
     #endregion
 
@@ -95,6 +96,24 @@ public class PlayerController : MonoBehaviour, IScoreSystem
             _isJumping = false;
             _jumpTimeRef = 0; //Reset jump held timer
         }
+
+        if (Input.GetKeyDown(KeyCode.Space) && _collisionHandler.CanWallJump())
+        {
+            _speed = 10;
+            _rigidBody2D.velocity = new Vector2(_rigidBody2D.velocity.x, _jumpVelocity * 1.3f);
+            _direction *= -1;
+            _collisionHandler.direction = _direction;
+            isWallJumping = true;
+            
+        }
+
+        if (_collisionHandler.IsGrounded() && isWallJumping)
+        {
+            isWallJumping = false;
+            _collisionHandler.direction = 1;
+            _speed = 0;
+            StartCoroutine(DelayedRun());
+        }
     }
 
     private void FixedUpdate()
@@ -108,6 +127,13 @@ public class PlayerController : MonoBehaviour, IScoreSystem
             _rigidBody2D.velocity = new Vector2(_speed * _direction, _rigidBody2D.velocity.y);
         }
         
+    }
+
+    IEnumerator DelayedRun()
+    {
+        _direction *= -1;
+        yield return new WaitForSeconds(.5f);
+        _speed = 8;
     }
 
     #region Interface Functions
