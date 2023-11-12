@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour, IScoreSystem
 
     [Header("Player Attributes")]
     private int _mana;
-    private int _direction = 1;
+    [SerializeField] private int _direction = 1;
     private bool _move = false;
     [SerializeField] private float _speed = 6;
     [SerializeField] private float _jumpVelocity = 15;
@@ -56,6 +56,8 @@ public class PlayerController : MonoBehaviour, IScoreSystem
 
     private void Update()
     {
+        _collisionHandler.direction = _direction;
+
         if (Input.GetKeyDown(KeyCode.A))
         {
             _direction = -1;
@@ -73,6 +75,15 @@ public class PlayerController : MonoBehaviour, IScoreSystem
         if (Input.GetKeyDown(KeyCode.W) && _collisionHandler.CanWallJump())
         {
             _direction = 0;
+        }
+
+        if (_collisionHandler.CanWallJump())
+        {
+            _maxFallVelocity = -10;
+        }
+        else if (!_collisionHandler.CanWallJump())
+        {
+            _maxFallVelocity = -18;
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && _collisionHandler.IsGrounded()) //If Jump key is triggered and player is overlapping with Ground
@@ -96,13 +107,12 @@ public class PlayerController : MonoBehaviour, IScoreSystem
             _isJumping = false;
             _jumpTimeRef = 0; //Reset jump held timer
         }
-
+        
         if (Input.GetKeyDown(KeyCode.Space) && _collisionHandler.CanWallJump())
         {
             _speed = 10;
             _rigidBody2D.velocity = new Vector2(_rigidBody2D.velocity.x, _jumpVelocity * 1.3f);
             _direction *= -1;
-            _collisionHandler.direction = _direction;
             isWallJumping = true;
             
         }
@@ -131,7 +141,7 @@ public class PlayerController : MonoBehaviour, IScoreSystem
 
     IEnumerator DelayedRun()
     {
-        _direction *= -1;
+        _direction = 1;
         yield return new WaitForSeconds(.5f);
         _speed = 8;
     }

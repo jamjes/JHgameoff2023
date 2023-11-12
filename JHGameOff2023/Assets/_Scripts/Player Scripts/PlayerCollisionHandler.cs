@@ -11,6 +11,8 @@ public class PlayerCollisionHandler : MonoBehaviour
     public bool WallJump;
     public int direction = 1;
 
+    
+    
     public bool IsGrounded()
     {
         bool grounded;
@@ -23,6 +25,10 @@ public class PlayerCollisionHandler : MonoBehaviour
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(Bc.bounds.center, Bc.bounds.size, 0f, Vector2.right * direction, ExtraHeight, WallLayer);
         WallJump = raycastHit.collider != null;
+        if (WallJump)
+        {
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        }
         return WallJump;
     }
 
