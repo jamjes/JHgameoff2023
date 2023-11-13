@@ -9,6 +9,7 @@ public class PlayerMovementController : MonoBehaviour
     private Rigidbody2D _rb2d;
     private bool _canMove = true;
     private float _groundSpeed = 6;
+    private float _wallRunSpeed = 10;
     private float _jumpForce = 16f;
     private float _reboundJumpForce = 12f;
     
@@ -23,6 +24,7 @@ public class PlayerMovementController : MonoBehaviour
     private Player _playerRef;
     public int DebugMoveMode = 0;
     public bool _wallSliding = false;
+    public bool _wallRunning = false;
 
     private void OnEnable()
     {
@@ -57,54 +59,65 @@ public class PlayerMovementController : MonoBehaviour
             if (_direction != 1) _direction = 1;
         }
         
-        if (Input.GetButtonDown("DebugRunnerStopMove"))
-        {
-            _canMove = !_canMove;
-        }
+        //if (Input.GetButtonDown("DebugRunnerStopMove"))
+        //{
+            //_canMove = !_canMove;
+        //}
 
         if (_canMove)
         {
             if (DebugMoveMode == 1) _direction = Input.GetAxis("RunnerHorizontal");
-        }
 
-        if (Input.GetButtonDown("RunnerJump") && grounded)
-        {
-            Jump();
-        }
+            if (Input.GetButtonDown("RunnerJump") && grounded)
+            {
+                Jump();
+            }
 
-        if ((!grounded && walled) && _rb2d.velocity.y < 0)
-        {
-            if (!_wallSliding) _wallSliding = true;
-        }
+            if ((!grounded && walled) && _rb2d.velocity.y < 0)
+            {
+                if (!_wallSliding) _wallSliding = true;
 
-        if (Input.GetButtonDown("RunnerJump") && (!grounded && walled))
-        {
-            WallJump();
-        }
-        
-        if (Input.GetButtonUp("RunnerJump") &&  _rb2d.velocity.y > 1)
-        {
-            _rb2d.velocity = new Vector2(_rb2d.velocity.x, 1);
-        }
-        else if (Input.GetButtonUp("RunnerJump") && (_rb2d.velocity.y > 0 && _rb2d.velocity.y < 1))
-        {
-            _rb2d.velocity = new Vector2(_rb2d.velocity.x, 0);
-        }
+                if (Input.GetAxis("RunnerVertical") == 1)
+                {
+                    _wallRunning = true;
+                    UpdateGravityScale(0);
+                }
+            }
 
-        if (_rb2d.velocity.y > 0 && _rb2d.gravityScale != _jumpGravityScale)
-        {
-            UpdateGravityScale(_jumpGravityScale);
-        }
-        else if (_rb2d.velocity.y < 0 && _rb2d.gravityScale != _fallGravityScale)
-        {
-            UpdateGravityScale(_fallGravityScale);
+            if (Input.GetButtonDown("RunnerJump") && (!grounded && walled))
+            {
+                WallJump();
+            }
+
+            if (Input.GetButtonUp("RunnerJump") && _rb2d.velocity.y > 1)
+            {
+                _rb2d.velocity = new Vector2(_rb2d.velocity.x, 1);
+            }
+            else if (Input.GetButtonUp("RunnerJump") && (_rb2d.velocity.y > 0 && _rb2d.velocity.y < 1))
+            {
+                _rb2d.velocity = new Vector2(_rb2d.velocity.x, 0);
+            }
+
+            if (_rb2d.velocity.y > 0 && _rb2d.gravityScale != _jumpGravityScale)
+            {
+                UpdateGravityScale(_jumpGravityScale);
+            }
+            else if (_rb2d.velocity.y < 0 && _rb2d.gravityScale != _fallGravityScale)
+            {
+                UpdateGravityScale(_fallGravityScale);
+            }
+
+            if (_wallRunning && !walled)
+            {
+                _wallRunning = false;
+                UpdateGravityScale(_jumpGravityScale);
+                //Jump();
+            }
         }
     }
 
     private void FixedUpdate()
     {
-        Debug.Log(_rb2d.velocity.y);
-        
         if (_canMove)
         {
             float yMaxVel;
@@ -118,6 +131,11 @@ public class PlayerMovementController : MonoBehaviour
                 yMaxVel = _maxFallVelocity;
             }
             _rb2d.velocity = new Vector2(_groundSpeed * _direction, Mathf.Clamp(_rb2d.velocity.y, yMaxVel, _jumpForce));
+        }
+
+        if (_wallRunning)
+        {
+            _rb2d.velocity = new Vector2(0, _wallRunSpeed);
         }
     }
 
