@@ -8,8 +8,9 @@ public class PlayerMovementController : MonoBehaviour
 {
     private Rigidbody2D _rb2d;
     private bool _move = true;
-    [SerializeField] private float _groundSpeed = 0;
-    [SerializeField] private float _jumpForce = 18;
+    [SerializeField] private float _groundSpeed = 6;
+    [SerializeField] private float _jumpForce = 18.25f;
+    [SerializeField] private float _maxFallVelocity = -25;
     private float _direction = 0;
     private Player _playerRef;
     public bool grounded = false;
@@ -67,6 +68,11 @@ public class PlayerMovementController : MonoBehaviour
     private void FixedUpdate()
     {
         if (_move) _rb2d.velocity = new Vector2(_groundSpeed * _direction, _rb2d.velocity.y);
+
+        if (_rb2d.velocity.y < _maxFallVelocity)
+        {
+            _rb2d.velocity = new Vector2(_rb2d.velocity.x, _maxFallVelocity);
+        }
     }
 
     private void Jump()
