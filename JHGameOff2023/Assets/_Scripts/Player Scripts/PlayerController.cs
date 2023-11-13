@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IScoreSystem
@@ -12,7 +13,7 @@ public class PlayerController : MonoBehaviour, IScoreSystem
 
     [Header("Custom Components")]
     private PlayerHUD _playerHUD; //Display Player Attributes on Canvas
-    private PlayerCollisionHandler _collisionHandler; //Custom collision events
+    public PlayerCollisionHandler _collisionHandler { private set; get; } //Custom collision events
 
     [Header("Player Attributes")]
     private int _mana;
@@ -28,6 +29,11 @@ public class PlayerController : MonoBehaviour, IScoreSystem
     private float _jumpTimeRef = 0;
     private bool _isJumping = false;
     private bool isWallJumping = false;
+
+
+    [Header("Input Manager")]
+    public bool jumpTriggered;
+    public bool jumpHeld;
 
     #endregion
 
@@ -56,26 +62,36 @@ public class PlayerController : MonoBehaviour, IScoreSystem
 
     private void Update()
     {
-        _collisionHandler.direction = _direction;
+        /*_collisionHandler.direction = _direction;
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetButtonDown("RunnerChangeDirection")) //When this Input is detected, invert the current direction
         {
-            _direction = -1;
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            _direction = 1;
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            Debug.Log("Direction = 0");
-            _direction = 0;
+            _direction *= -1;
         }
 
-        if (Input.GetKeyDown(KeyCode.W) && _collisionHandler.CanWallJump())
+        if (Input.GetButtonDown("RunnerJump") && _collisionHandler.IsGrounded()) //When this Input is detected and the player is colliding with ground, Jump
         {
-            _direction = 0;
+            Jump();
         }
+        
+        //if (Input.GetKeyDown(KeyCode.A))
+        //{
+            //_direction = -1;
+        //}
+        //else if (Input.GetKeyDown(KeyCode.D))
+        //{
+            //_direction = 1;
+        //}
+        //else if (Input.GetKeyDown(KeyCode.S))
+        //{
+            //Debug.Log("Direction = 0");
+            //_direction = 0;
+        //}
+
+        //if (Input.GetKeyDown(KeyCode.W) && _collisionHandler.CanWallJump())
+        //{
+            //_direction = 0;
+        //}
 
         if (_collisionHandler.CanWallJump())
         {
@@ -123,19 +139,19 @@ public class PlayerController : MonoBehaviour, IScoreSystem
             _collisionHandler.direction = 1;
             _speed = 0;
             StartCoroutine(DelayedRun());
-        }
+        }*/
     }
 
     private void FixedUpdate()
     {
-        if (_direction == 0 && _collisionHandler.CanWallJump())
+        /*if (_direction == 0 && _collisionHandler.CanWallJump())
         {
             _rigidBody2D.velocity = new Vector2(_rigidBody2D.velocity.x, _speed * 2);
         }
         else
         {
             _rigidBody2D.velocity = new Vector2(_speed * _direction, _rigidBody2D.velocity.y);
-        }
+        }*/
         
     }
 
@@ -164,6 +180,11 @@ public class PlayerController : MonoBehaviour, IScoreSystem
         _direction = 0;
         _rigidBody2D.gravityScale = 0;
         _rigidBody2D.velocity = Vector2.zero;
+    }
+
+    private void Jump()
+    {
+
     }
 
     #endregion

@@ -4,24 +4,22 @@ using UnityEngine;
 
 public class PlayerCollisionHandler : MonoBehaviour
 {
-    public float ExtraHeight = 1f;
+    private float ExtraHeight = .3f;
     public BoxCollider2D Bc;
     public LayerMask GroundLayer;
     public LayerMask WallLayer;
     public bool WallJump;
     public int direction = 1;
 
-    
-    
     public bool IsGrounded()
     {
-        bool grounded;
-        RaycastHit2D raycastHit = Physics2D.BoxCast(Bc.bounds.center, Bc.bounds.size, 0f, Vector2.down, ExtraHeight, GroundLayer);
-        grounded = raycastHit.collider != null;
-        return grounded;
+
+        RaycastHit2D hit = Physics2D.BoxCast(Bc.bounds.center, Bc.bounds.size, 0f, Vector2.down, ExtraHeight, GroundLayer);
+        //DisplayGroundRays(hit.collider != null ? true : false);
+        return hit.collider != null;
     }
 
-    public bool CanWallJump()
+    /*public bool CanWallJump()
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(Bc.bounds.center, Bc.bounds.size, 0f, Vector2.right * direction, ExtraHeight, WallLayer);
         WallJump = raycastHit.collider != null;
@@ -39,5 +37,23 @@ public class PlayerCollisionHandler : MonoBehaviour
             GetComponent<PlayerController>().Increment(1);
             Destroy(collision.gameObject);
         }
+    }*/
+
+    private void DisplayGroundRays(bool condition)
+    {
+        Color rayColor;
+
+        if (condition)
+        {
+            rayColor = Color.green;
+        }
+        else
+        {
+            rayColor = Color.red;
+        }
+
+        Debug.DrawRay(Bc.bounds.center + new Vector3(Bc.bounds.extents.x, 0), Vector2.down * (Bc.bounds.extents.y + ExtraHeight), rayColor);
+        Debug.DrawRay(Bc.bounds.center - new Vector3(Bc.bounds.extents.x, 0), Vector2.down * (Bc.bounds.extents.y + ExtraHeight), rayColor);
+        Debug.DrawRay(Bc.bounds.center - new Vector3(Bc.bounds.extents.x, Bc.bounds.extents.y + ExtraHeight), Vector2.right * (Bc.bounds.extents.x * 2), rayColor);
     }
 }
