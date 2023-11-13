@@ -10,6 +10,7 @@ public class PlayerMovementController : MonoBehaviour
     private bool _canMove = true;
     private float _groundSpeed = 6;
     private float _jumpForce = 16f;
+    private float _reboundJumpForce = 12f;
     
     
     private float _maxFallVelocity = -25;
@@ -46,9 +47,14 @@ public class PlayerMovementController : MonoBehaviour
         bool walled = _playerRef.CollisionHandler.IsWalled(_direction);
 
 
-        if (grounded)
+        if (!walled)
         {
             _wallSliding = false;
+        }
+        
+        if (grounded)
+        {
+            if (_direction != 1) _direction = 1;
         }
         
         if (Input.GetButtonDown("DebugRunnerStopMove"))
@@ -71,10 +77,10 @@ public class PlayerMovementController : MonoBehaviour
             if (!_wallSliding) _wallSliding = true;
         }
 
-        /*if (Input.GetButtonDown("RunnerJump") && (!grounded && walled))
+        if (Input.GetButtonDown("RunnerJump") && (!grounded && walled))
         {
-            Debug.Log("Can Wall Jump");
-        }*/
+            WallJump();
+        }
         
         if (Input.GetButtonUp("RunnerJump") &&  _rb2d.velocity.y > 1)
         {
@@ -118,6 +124,12 @@ public class PlayerMovementController : MonoBehaviour
     private void Jump()
     {
         _rb2d.velocity = new Vector2(_rb2d.velocity.x, _jumpForce);
+    }
+
+    private void WallJump()
+    {
+        _direction = -1;
+        _rb2d.velocity = new Vector2(0, _reboundJumpForce);
     }
 
     private void DisableMovement()
