@@ -131,8 +131,6 @@ GameObject:
   m_Component:
   - component: {fileID: 356578105}
   - component: {fileID: 356578106}
-  - component: {fileID: 356578110}
-  - component: {fileID: 356578108}
   - component: {fileID: 356578107}
   - component: {fileID: 356578112}
   - component: {fileID: 356578111}
@@ -152,7 +150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 356578104}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 244.1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1481220171}
@@ -206,25 +204,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &356578108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 356578104}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58a2e396f947e634c8cfc30c8081fce6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _direction: 1
-  _speed: 8
-  _jumpVelocity: 12
-  _maxFallVelocity: -18
-  _jumpButtonHeldTimeMax: 0.3
-  jumpTriggered: 0
-  jumpHeld: 0
 --- !u!114 &356578109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,28 +216,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db53aa02cd7d9b4396c722f29edc3a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bc: {fileID: 356578106}
   GroundLayer:
     serializedVersion: 2
     m_Bits: 256
   WallLayer:
     serializedVersion: 2
     m_Bits: 512
-  WallJump: 0
-  direction: 0
---- !u!114 &356578110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 356578104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1dfcba60a5f4b24d8f9d956585ec957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ManaValue: {fileID: 0}
 --- !u!114 &356578111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,8 +237,7 @@ MonoBehaviour:
   _groundSpeed: 6
   _jumpForce: 18.25
   _maxFallVelocity: -25
-  grounded: 0
-  moveMode: 1
+  DebugMoveMode: 0
 --- !u!114 &356578112
 MonoBehaviour:
   m_ObjectHideFlags: 0

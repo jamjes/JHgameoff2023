@@ -4,24 +4,28 @@ using UnityEngine;
 
 public class PlayerCollisionHandler : MonoBehaviour
 {
-    private float ExtraHeight = .3f;
-    public BoxCollider2D Bc;
-    public LayerMask GroundLayer;
-    public LayerMask WallLayer;
-    public bool WallJump;
-    public int direction = 1;
+    private BoxCollider2D _boxCol;
+    private float _detectionLeniency = .3f;
+    [SerializeField] private LayerMask GroundLayer;
+    [SerializeField] private LayerMask WallLayer;
+    [SerializeField] private bool DEBUG_MODE = false;
+
+    private void Start()
+    {
+        _boxCol = GetComponent<BoxCollider2D>();
+    }
 
     public bool IsGrounded()
     {
 
-        RaycastHit2D hit = Physics2D.BoxCast(Bc.bounds.center, Bc.bounds.size, 0f, Vector2.down, ExtraHeight, GroundLayer);
-        //DisplayGroundRays(hit.collider != null ? true : false);
+        RaycastHit2D hit = Physics2D.BoxCast(_boxCol.bounds.center, _boxCol.bounds.size, 0f, Vector2.down, _detectionLeniency, GroundLayer);
+        if (DEBUG_MODE) DisplayGroundRays(hit.collider != null ? true : false);
         return hit.collider != null;
     }
 
-    /*public bool CanWallJump()
+    /*public bool CanWallJump(float direction)
     {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(Bc.bounds.center, Bc.bounds.size, 0f, Vector2.right * direction, ExtraHeight, WallLayer);
+        RaycastHit2D raycastHit = Physics2D.BoxCast(_boxCol.bounds.center, _boxCol.bounds.size, 0f, Vector2.right * direction, _detectionLeniency, WallLayer);
         WallJump = raycastHit.collider != null;
         if (WallJump)
         {
@@ -52,8 +56,8 @@ public class PlayerCollisionHandler : MonoBehaviour
             rayColor = Color.red;
         }
 
-        Debug.DrawRay(Bc.bounds.center + new Vector3(Bc.bounds.extents.x, 0), Vector2.down * (Bc.bounds.extents.y + ExtraHeight), rayColor);
-        Debug.DrawRay(Bc.bounds.center - new Vector3(Bc.bounds.extents.x, 0), Vector2.down * (Bc.bounds.extents.y + ExtraHeight), rayColor);
-        Debug.DrawRay(Bc.bounds.center - new Vector3(Bc.bounds.extents.x, Bc.bounds.extents.y + ExtraHeight), Vector2.right * (Bc.bounds.extents.x * 2), rayColor);
+        Debug.DrawRay(_boxCol.bounds.center + new Vector3(_boxCol.bounds.extents.x, 0), Vector2.down * (_boxCol.bounds.extents.y + _detectionLeniency), rayColor);
+        Debug.DrawRay(_boxCol.bounds.center - new Vector3(_boxCol.bounds.extents.x, 0), Vector2.down * (_boxCol.bounds.extents.y + _detectionLeniency), rayColor);
+        Debug.DrawRay(_boxCol.bounds.center - new Vector3(_boxCol.bounds.extents.x, _boxCol.bounds.extents.y + _detectionLeniency), Vector2.right * (_boxCol.bounds.extents.x * 2), rayColor);
     }
 }

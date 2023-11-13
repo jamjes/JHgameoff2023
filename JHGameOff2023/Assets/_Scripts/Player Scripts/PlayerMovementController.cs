@@ -7,36 +7,43 @@ using UnityEngine;
 public class PlayerMovementController : MonoBehaviour
 {
     private Rigidbody2D _rb2d;
-    private bool _move = true;
-    [SerializeField] private float _groundSpeed = 6;
-    [SerializeField] private float _jumpForce = 18.25f;
-    [SerializeField] private float _maxFallVelocity = -25;
+    private bool _canMove = true;
+    private float _groundSpeed = 6;
+    private float _jumpForce = 18.25f;
+    private float _maxFallVelocity = -25;
+    private float _jumpGravityScale = 4;
+    private float _fallGravityScale = 5;
     private float _direction = 0;
     private Player _playerRef;
-    public bool grounded = false;
-    public int moveMode = 0;
+    public int DebugMoveMode = 0;
+
+    private void OnEnable()
+    {
+        KillzoneEventManager.OnDeathEnter += DisableMovement;
+    }
+
+    private void OnDisable()
+    {
+        KillzoneEventManager.OnDeathEnter -= DisableMovement;
+    }
 
     private void Start()
     {
         _rb2d = GetComponent<Rigidbody2D>();
         _playerRef = GetComponent<Player>();
-        if (moveMode == 0) _direction = 1;
+        if (DebugMoveMode == 0) _direction = 1;
     }
 
     private void Update()
     {
-        //grounded = _playerRef.CollisionHandler.IsGrounded();
-
-        Debug.Log(_rb2d.velocity.y);
-        
         if (Input.GetButtonDown("DebugRunnerStopMove"))
         {
-            _move = !_move;
+            _canMove = !_canMove;
         }
 
-        if (_move)
+        if (_canMove)
         {
-            if (moveMode == 1) _direction = Input.GetAxis("RunnerHorizontal");
+            if (DebugMoveMode == 1) _direction = Input.GetAxis("RunnerHorizontal");
         }
 
         if (Input.GetButtonDown("RunnerJump") && _playerRef.CollisionHandler.IsGrounded())
@@ -53,21 +60,19 @@ public class PlayerMovementController : MonoBehaviour
             _rb2d.velocity = new Vector2(_rb2d.velocity.x, 0);
         }
 
-
-
-        if (_rb2d.velocity.y > 0 && _rb2d.gravityScale != 4)
+        if (_rb2d.velocity.y > 0 && _rb2d.gravityScale != _jumpGravityScale)
         {
-            _rb2d.gravityScale = 4;
+            UpdateGravityScale(_jumpGravityScale);
         }
-        else if (_rb2d.velocity.y < 0 && _rb2d.gravityScale != 5)
+        else if (_rb2d.velocity.y < 0 && _rb2d.gravityScale != _fallGravityScale)
         {
-            _rb2d.gravityScale = 5;
+            UpdateGravityScale(_fallGravityScale);
         }
     }
 
     private void FixedUpdate()
     {
-        if (_move) _rb2d.velocity = new Vector2(_groundSpeed * _direction, _rb2d.velocity.y);
+        if (_canMove) _rb2d.velocity = new Vector2(_groundSpeed * _direction, _rb2d.velocity.y);
 
         if (_rb2d.velocity.y < _maxFallVelocity)
         {
@@ -78,5 +83,17 @@ public class PlayerMovementController : MonoBehaviour
     private void Jump()
     {
         _rb2d.velocity = new Vector2(_rb2d.velocity.x, _jumpForce);
+    }
+
+    private void DisableMovement()
+    {
+        _canMove = false;
+        UpdateGravityScale(0);
+        _rb2d.velocity = Vector2.zero;
+    }
+
+    private void UpdateGravityScale(float newVal)
+    {
+        _rb2d.gravityScale = newVal;
     }
 }
