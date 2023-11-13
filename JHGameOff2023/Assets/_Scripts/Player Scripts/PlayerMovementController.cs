@@ -128,7 +128,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private void WallJump()
     {
-        _direction = -1;
+        _direction *= -1;
         _rb2d.velocity = new Vector2(0, _reboundJumpForce);
     }
 
