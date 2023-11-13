@@ -23,30 +23,17 @@ public class PlayerCollisionHandler : MonoBehaviour
         return hit.collider != null;
     }
 
-    /*public bool CanWallJump(float direction)
+    public bool IsWalled(float direction)
     {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(_boxCol.bounds.center, _boxCol.bounds.size, 0f, Vector2.right * direction, _detectionLeniency, WallLayer);
-        WallJump = raycastHit.collider != null;
-        if (WallJump)
-        {
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        }
-        return WallJump;
+        RaycastHit2D hit = Physics2D.BoxCast(_boxCol.bounds.center, _boxCol.bounds.size, 0f, Vector2.right * direction, _detectionLeniency, WallLayer);
+        if (DEBUG_MODE) DisplayGroundRays(hit.collider != null ? true : false);
+        return hit.collider != null;
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Mana")
-        {
-            GetComponent<PlayerController>().Increment(1);
-            Destroy(collision.gameObject);
-        }
-    }*/
 
     private void DisplayGroundRays(bool condition)
     {
         Color rayColor;
-
+        
         if (condition)
         {
             rayColor = Color.green;

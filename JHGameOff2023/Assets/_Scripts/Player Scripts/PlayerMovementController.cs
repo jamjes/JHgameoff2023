@@ -9,13 +9,19 @@ public class PlayerMovementController : MonoBehaviour
     private Rigidbody2D _rb2d;
     private bool _canMove = true;
     private float _groundSpeed = 6;
-    private float _jumpForce = 18.25f;
+    private float _jumpForce = 16f;
+    
+    
     private float _maxFallVelocity = -25;
+    private float _maxSlideVelocity = -5;
+
     private float _jumpGravityScale = 4;
     private float _fallGravityScale = 5;
+
     private float _direction = 0;
     private Player _playerRef;
     public int DebugMoveMode = 0;
+    public bool _wallSliding = false;
 
     private void OnEnable()
     {
@@ -36,6 +42,15 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Update()
     {
+        bool grounded = _playerRef.CollisionHandler.IsGrounded();
+        bool walled = _playerRef.CollisionHandler.IsWalled(_direction);
+
+
+        if (grounded)
+        {
+            _wallSliding = false;
+        }
+        
         if (Input.GetButtonDown("DebugRunnerStopMove"))
         {
             _canMove = !_canMove;
@@ -46,10 +61,20 @@ public class PlayerMovementController : MonoBehaviour
             if (DebugMoveMode == 1) _direction = Input.GetAxis("RunnerHorizontal");
         }
 
-        if (Input.GetButtonDown("RunnerJump") && _playerRef.CollisionHandler.IsGrounded())
+        if (Input.GetButtonDown("RunnerJump") && grounded)
         {
             Jump();
         }
+
+        if ((!grounded && walled) && _rb2d.velocity.y < 0)
+        {
+            if (!_wallSliding) _wallSliding = true;
+        }
+
+        /*if (Input.GetButtonDown("RunnerJump") && (!grounded && walled))
+        {
+            Debug.Log("Can Wall Jump");
+        }*/
         
         if (Input.GetButtonUp("RunnerJump") &&  _rb2d.velocity.y > 1)
         {
@@ -72,11 +97,21 @@ public class PlayerMovementController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_canMove) _rb2d.velocity = new Vector2(_groundSpeed * _direction, _rb2d.velocity.y);
-
-        if (_rb2d.velocity.y < _maxFallVelocity)
+        Debug.Log(_rb2d.velocity.y);
+        
+        if (_canMove)
         {
-            _rb2d.velocity = new Vector2(_rb2d.velocity.x, _maxFallVelocity);
+            float yMaxVel;
+
+            if (_wallSliding)
+            {
+                yMaxVel = _maxSlideVelocity;
+            }
+            else
+            {
+                yMaxVel = _maxFallVelocity;
+            }
+            _rb2d.velocity = new Vector2(_groundSpeed * _direction, Mathf.Clamp(_rb2d.velocity.y, yMaxVel, _jumpForce));
         }
     }
 
