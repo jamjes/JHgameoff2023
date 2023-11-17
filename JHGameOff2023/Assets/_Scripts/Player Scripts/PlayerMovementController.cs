@@ -8,10 +8,11 @@ public class PlayerMovementController : MonoBehaviour
 {
     private Rigidbody2D _rb2d;
     private bool _canMove = true;
-    private float _groundSpeed = 6;
-    private float _wallRunSpeed = 10;
-    private float _jumpForce = 16f;
-    private float _reboundJumpForce = 12f;
+    [SerializeField] private float _groundSpeed = 6;
+    [SerializeField] private float _wallRunSpeed = 10;
+    [SerializeField] private float _jumpForce = 16f;
+    [SerializeField] private float _reboundJumpForce = 12f;
+    [SerializeField] private float _reboundMoveSpeed = 0;
     
     
     private float _maxFallVelocity = -25;
@@ -25,6 +26,7 @@ public class PlayerMovementController : MonoBehaviour
     public int DebugMoveMode = 0;
     public bool _wallSliding = false;
     public bool _wallRunning = false;
+    public bool _isWallJumping = false;
 
     private void OnEnable()
     {
@@ -53,17 +55,18 @@ public class PlayerMovementController : MonoBehaviour
         {
             _wallSliding = false;
         }
-        
+
         if (grounded)
         {
-            if (_direction != 1) _direction = 1;
+            if (_isWallJumping) _isWallJumping = false;
+            if (_direction == -1)
+            {
+                _direction = 0;
+                StartCoroutine(DelayedStart());
+            }
+            
         }
         
-        //if (Input.GetButtonDown("DebugRunnerStopMove"))
-        //{
-            //_canMove = !_canMove;
-        //}
-
         if (_canMove)
         {
             if (DebugMoveMode == 1) _direction = Input.GetAxis("RunnerHorizontal");
@@ -111,7 +114,6 @@ public class PlayerMovementController : MonoBehaviour
             {
                 _wallRunning = false;
                 UpdateGravityScale(_jumpGravityScale);
-                //Jump();
             }
         }
     }
@@ -121,6 +123,7 @@ public class PlayerMovementController : MonoBehaviour
         if (_canMove)
         {
             float yMaxVel;
+            float xSpeed;
 
             if (_wallSliding)
             {
@@ -130,7 +133,16 @@ public class PlayerMovementController : MonoBehaviour
             {
                 yMaxVel = _maxFallVelocity;
             }
-            _rb2d.velocity = new Vector2(_groundSpeed * _direction, Mathf.Clamp(_rb2d.velocity.y, yMaxVel, _jumpForce));
+
+            if (_isWallJumping)
+            {
+                xSpeed = _reboundMoveSpeed;
+            }
+            else
+            {
+                xSpeed = _groundSpeed;
+            }
+            _rb2d.velocity = new Vector2(xSpeed * _direction, Mathf.Clamp(_rb2d.velocity.y, yMaxVel, _jumpForce));
         }
 
         if (_wallRunning)
@@ -147,6 +159,7 @@ public class PlayerMovementController : MonoBehaviour
     private void WallJump()
     {
         _direction *= -1;
+        _isWallJumping = true;
         _rb2d.velocity = new Vector2(0, _reboundJumpForce);
     }
 
@@ -160,5 +173,14 @@ public class PlayerMovementController : MonoBehaviour
     private void UpdateGravityScale(float newVal)
     {
         _rb2d.gravityScale = newVal;
+    }
+
+    private IEnumerator DelayedStart()
+    {
+        DisableMovement();
+        yield return new WaitForSeconds(.2f);
+        _direction = 1;
+        UpdateGravityScale(_fallGravityScale);
+        _canMove = true;
     }
 }
