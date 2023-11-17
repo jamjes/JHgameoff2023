@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IScoreSystem
@@ -12,21 +13,27 @@ public class PlayerController : MonoBehaviour, IScoreSystem
 
     [Header("Custom Components")]
     private PlayerHUD _playerHUD; //Display Player Attributes on Canvas
-    private PlayerCollisionHandler _collisionHandler; //Custom collision events
+    public PlayerCollisionHandler _collisionHandler { private set; get; } //Custom collision events
 
     [Header("Player Attributes")]
     private int _mana;
-    private int _direction = 1;
+    [SerializeField] private int _direction = 1;
     private bool _move = false;
     [SerializeField] private float _speed = 6;
     [SerializeField] private float _jumpVelocity = 15;
-    [SerializeField] private Transform _feet; //Reference to player feet position
+    //[SerializeField] private Transform _feet; //Reference to player feet position
 
     [Header("Player Physics")]
     [SerializeField] private float _maxFallVelocity = -18; //Maximum value applied to player negative y velocity
     [SerializeField] private float _jumpButtonHeldTimeMax = .3f; //Time jump button can be held to increase positive y velocity
     private float _jumpTimeRef = 0;
     private bool _isJumping = false;
+    private bool isWallJumping = false;
+
+
+    [Header("Input Manager")]
+    public bool jumpTriggered;
+    public bool jumpHeld;
 
     #endregion
 
@@ -55,14 +62,44 @@ public class PlayerController : MonoBehaviour, IScoreSystem
 
     private void Update()
     {
-        
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        /*_collisionHandler.direction = _direction;
+
+        if (Input.GetButtonDown("RunnerChangeDirection")) //When this Input is detected, invert the current direction
         {
-            _direction = -1;
+            _direction *= -1;
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+
+        if (Input.GetButtonDown("RunnerJump") && _collisionHandler.IsGrounded()) //When this Input is detected and the player is colliding with ground, Jump
         {
-            _direction = 1;
+            Jump();
+        }
+        
+        //if (Input.GetKeyDown(KeyCode.A))
+        //{
+            //_direction = -1;
+        //}
+        //else if (Input.GetKeyDown(KeyCode.D))
+        //{
+            //_direction = 1;
+        //}
+        //else if (Input.GetKeyDown(KeyCode.S))
+        //{
+            //Debug.Log("Direction = 0");
+            //_direction = 0;
+        //}
+
+        //if (Input.GetKeyDown(KeyCode.W) && _collisionHandler.CanWallJump())
+        //{
+            //_direction = 0;
+        //}
+
+        if (_collisionHandler.CanWallJump())
+        {
+            _maxFallVelocity = -10;
+        }
+        else if (!_collisionHandler.CanWallJump())
+        {
+            _maxFallVelocity = -18;
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && _collisionHandler.IsGrounded()) //If Jump key is triggered and player is overlapping with Ground
@@ -86,15 +123,43 @@ public class PlayerController : MonoBehaviour, IScoreSystem
             _isJumping = false;
             _jumpTimeRef = 0; //Reset jump held timer
         }
+        
+        if (Input.GetKeyDown(KeyCode.Space) && _collisionHandler.CanWallJump())
+        {
+            _speed = 10;
+            _rigidBody2D.velocity = new Vector2(_rigidBody2D.velocity.x, _jumpVelocity * 1.3f);
+            _direction *= -1;
+            isWallJumping = true;
+            
+        }
+
+        if (_collisionHandler.IsGrounded() && isWallJumping)
+        {
+            isWallJumping = false;
+            _collisionHandler.direction = 1;
+            _speed = 0;
+            StartCoroutine(DelayedRun());
+        }*/
     }
 
     private void FixedUpdate()
     {
-        if (_move)
+        /*if (_direction == 0 && _collisionHandler.CanWallJump())
+        {
+            _rigidBody2D.velocity = new Vector2(_rigidBody2D.velocity.x, _speed * 2);
+        }
+        else
         {
             _rigidBody2D.velocity = new Vector2(_speed * _direction, _rigidBody2D.velocity.y);
-        }
+        }*/
         
+    }
+
+    IEnumerator DelayedRun()
+    {
+        _direction = 1;
+        yield return new WaitForSeconds(.5f);
+        _speed = 8;
     }
 
     #region Interface Functions
@@ -115,6 +180,11 @@ public class PlayerController : MonoBehaviour, IScoreSystem
         _direction = 0;
         _rigidBody2D.gravityScale = 0;
         _rigidBody2D.velocity = Vector2.zero;
+    }
+
+    private void Jump()
+    {
+
     }
 
     #endregion

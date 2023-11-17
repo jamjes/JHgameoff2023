@@ -4,24 +4,47 @@ using UnityEngine;
 
 public class PlayerCollisionHandler : MonoBehaviour
 {
-    public float ExtraHeight = 1f;
-    public BoxCollider2D Bc;
-    public LayerMask GroundLayer;
-    public bool grounded = false;
+    private BoxCollider2D _boxCol;
+    private float _detectionLeniency = .3f;
+    [SerializeField] private LayerMask GroundLayer;
+    [SerializeField] private LayerMask WallLayer;
+    [SerializeField] private bool DEBUG_MODE = false;
+
+    private void Start()
+    {
+        _boxCol = GetComponent<BoxCollider2D>();
+    }
 
     public bool IsGrounded()
     {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(Bc.bounds.center, Bc.bounds.size, 0f, Vector2.down, ExtraHeight, GroundLayer);
-        grounded = raycastHit.collider != null;
-        return grounded;
+
+        RaycastHit2D hit = Physics2D.BoxCast(_boxCol.bounds.center, _boxCol.bounds.size, 0f, Vector2.down, _detectionLeniency, GroundLayer);
+        if (DEBUG_MODE) DisplayGroundRays(hit.collider != null ? true : false);
+        return hit.collider != null;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public bool IsWalled(float direction)
     {
-        if (collision.tag == "Mana")
+        RaycastHit2D hit = Physics2D.BoxCast(_boxCol.bounds.center, _boxCol.bounds.size, 0f, Vector2.right * direction, _detectionLeniency, WallLayer);
+        if (DEBUG_MODE) DisplayGroundRays(hit.collider != null ? true : false);
+        return hit.collider != null;
+    }
+
+    private void DisplayGroundRays(bool condition)
+    {
+        Color rayColor;
+        
+        if (condition)
         {
-            GetComponent<PlayerController>().Increment(1);
-            Destroy(collision.gameObject);
+            rayColor = Color.green;
         }
+        else
+        {
+            rayColor = Color.red;
+        }
+
+        Debug.DrawRay(_boxCol.bounds.center + new Vector3(_boxCol.bounds.extents.x, 0), Vector2.down * (_boxCol.bounds.extents.y + _detectionLeniency), rayColor);
+        Debug.DrawRay(_boxCol.bounds.center - new Vector3(_boxCol.bounds.extents.x, 0), Vector2.down * (_boxCol.bounds.extents.y + _detectionLeniency), rayColor);
+        Debug.DrawRay(_boxCol.bounds.center - new Vector3(_boxCol.bounds.extents.x, _boxCol.bounds.extents.y + _detectionLeniency), Vector2.right * (_boxCol.bounds.extents.x * 2), rayColor);
     }
 }
