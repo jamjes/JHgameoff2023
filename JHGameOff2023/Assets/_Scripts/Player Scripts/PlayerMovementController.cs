@@ -50,7 +50,6 @@ public class PlayerMovementController : MonoBehaviour
         bool grounded = _playerRef.CollisionHandler.IsGrounded();
         bool walled = _playerRef.CollisionHandler.IsWalled(_direction);
 
-
         if (!walled)
         {
             _wallSliding = false;
@@ -66,7 +65,7 @@ public class PlayerMovementController : MonoBehaviour
             }
             
         }
-        
+
         if (_canMove)
         {
             if (DebugMoveMode == 1) _direction = Input.GetAxis("RunnerHorizontal");

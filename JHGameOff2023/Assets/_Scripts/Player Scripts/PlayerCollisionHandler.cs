@@ -26,7 +26,6 @@ public class PlayerCollisionHandler : MonoBehaviour
     public bool IsWalled(float direction)
     {
         RaycastHit2D hit = Physics2D.BoxCast(_boxCol.bounds.center, _boxCol.bounds.size, 0f, Vector2.right * direction, .01f, WallLayer);
-        if (DEBUG_MODE) DisplayGroundRays(hit.collider != null ? true : false);
         return hit.collider != null;
     }
 
