@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
@@ -13,8 +14,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private float _jumpForce = 16f;
     [SerializeField] private float _reboundJumpForce = 12f;
     [SerializeField] private float _reboundMoveSpeed = 0;
-    
-    
+
     private float _maxFallVelocity = -25;
     private float _maxSlideVelocity = -5;
 
@@ -50,6 +50,8 @@ public class PlayerMovementController : MonoBehaviour
         bool grounded = _playerRef.CollisionHandler.IsGrounded();
         bool walled = _playerRef.CollisionHandler.IsWalled(_direction);
 
+        AnimationUpdate(grounded, walled);
+
         if (!walled)
         {
             _wallSliding = false;
@@ -57,13 +59,17 @@ public class PlayerMovementController : MonoBehaviour
 
         if (grounded)
         {
-            if (_isWallJumping) _isWallJumping = false;
+            if (_isWallJumping)
+            {
+                _isWallJumping = false;
+            }
+                
             if (_direction == -1)
             {
                 _direction = 0;
                 StartCoroutine(DelayedStart());
             }
-            
+
         }
 
         if (_canMove)
@@ -117,7 +123,27 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    void AnimationUpdate(bool isGrounded, bool isWalled)
+    {
+        if (isGrounded)
+        {
+            GetComponent<PlayerAnimationHandler>().SetAnim("run");
+        }
+        else
+        {
+            if (_isWallJumping) //isWalled && Input.GetButtonDown("RunnerJump")
+            {
+                GetComponent<PlayerAnimationHandler>().SetAnim("backflip");
+            }
+            else if (_rb2d.velocity.y != 0)
+            {
+                GetComponent<PlayerAnimationHandler>().SetAnim("airbourne");
+            }
+
+        }
+    }
+
+    void FixedUpdate()
     {
         if (_canMove)
         {
