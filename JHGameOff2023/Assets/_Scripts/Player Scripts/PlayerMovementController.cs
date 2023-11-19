@@ -7,13 +7,13 @@ using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
 {
-    private Rigidbody2D _rb2d;
+    public Rigidbody2D _rb2d;
     private bool _canMove = true;
-    [SerializeField] private float _groundSpeed = 6;
-    [SerializeField] private float _wallRunSpeed = 10;
-    [SerializeField] private float _jumpForce = 16f;
-    [SerializeField] private float _reboundJumpForce = 12f;
-    [SerializeField] private float _reboundMoveSpeed = 0;
+    /*[SerializeField]*/ private float _groundSpeed = 6;
+    /*[SerializeField]*/ private float _wallRunSpeed = 10;
+    /*[SerializeField]*/ private float _jumpForce = 16f;
+    /*[SerializeField]*/ private float _reboundJumpForce = 12f;
+    /*[SerializeField]*/ private float _reboundMoveSpeed = 8f;
 
     private float _maxFallVelocity = -25;
     private float _maxSlideVelocity = -5;
@@ -21,11 +21,13 @@ public class PlayerMovementController : MonoBehaviour
     private float _jumpGravityScale = 4;
     private float _fallGravityScale = 5;
 
-    private float _direction = 0;
+    public float _direction = 1;
     private Player _playerRef;
     public bool _wallSliding = false;
     public bool _wallRunning = false;
     public bool _isWallJumping = false;
+    public bool _isGrounded = false;
+    public bool _isWaiting = false;
 
     private void OnEnable()
     {
@@ -46,9 +48,10 @@ public class PlayerMovementController : MonoBehaviour
     private void Update()
     {
         bool grounded = _playerRef.CollisionHandler.IsGrounded();
+        _isGrounded = grounded;
         bool walled = _playerRef.CollisionHandler.IsWalled(_direction);
 
-        AnimationUpdate(grounded, walled);
+        //AnimationUpdate(grounded, walled);
 
         if (!walled)
         {
@@ -65,6 +68,7 @@ public class PlayerMovementController : MonoBehaviour
             if (_direction == -1)
             {
                 _direction = 0;
+                _isWaiting = true;
                 StartCoroutine(DelayedStart());
             }
 
@@ -118,27 +122,6 @@ public class PlayerMovementController : MonoBehaviour
             }
         }
     }
-
-    void AnimationUpdate(bool isGrounded, bool isWalled)
-    {
-        if (isGrounded)
-        {
-            GetComponent<PlayerAnimationHandler>().SetAnim("run");
-        }
-        else
-        {
-            if (_isWallJumping)
-            {
-                GetComponent<PlayerAnimationHandler>().SetAnim("backflip");
-            }
-            else if (_rb2d.velocity.y != 0)
-            {
-                GetComponent<PlayerAnimationHandler>().SetAnim("airbourne");
-            }
-
-        }
-    }
-
     void FixedUpdate()
     {
         if (_canMove)
@@ -163,6 +146,7 @@ public class PlayerMovementController : MonoBehaviour
             {
                 xSpeed = _groundSpeed;
             }
+
             _rb2d.velocity = new Vector2(xSpeed * _direction, Mathf.Clamp(_rb2d.velocity.y, yMaxVel, _jumpForce));
         }
 
@@ -181,7 +165,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         _direction *= -1;
         _isWallJumping = true;
-        _rb2d.velocity = new Vector2(0, _reboundJumpForce);
+        _rb2d.velocity = new Vector2(_groundSpeed * _direction, _reboundJumpForce);
     }
 
     private void DisableMovement()
@@ -199,9 +183,10 @@ public class PlayerMovementController : MonoBehaviour
     private IEnumerator DelayedStart()
     {
         DisableMovement();
-        yield return new WaitForSeconds(.2f);
+        yield return new WaitForSeconds(.4f);
         _direction = 1;
         UpdateGravityScale(_fallGravityScale);
         _canMove = true;
+        _isWaiting = false;
     }
 }

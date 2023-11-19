@@ -2,41 +2,60 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimationHandler : MonoBehaviour, IAnimatable
+public class PlayerAnimationHandler : MonoBehaviour
 {
     private static readonly int Run = Animator.StringToHash("run");
+    private static readonly int WallRun = Animator.StringToHash("wallrun");
+    private static readonly int Idle = Animator.StringToHash("idle");
     private static readonly int Airbourne = Animator.StringToHash("airbourne");
     private static readonly int Backflip = Animator.StringToHash("backflip");
     private static readonly int Wait = Animator.StringToHash("wait");
-    [SerializeField] private Animator _anim;
+    private static readonly int Wallslide = Animator.StringToHash("wallslide");
+    private Animator _anim;
 
-    private PlayerMovementController _playerRef;
+    [SerializeField] private PlayerMovementController _playerRef;
 
     private void Start()
     {
-        _playerRef = new PlayerMovementController();
+        _anim = GetComponent<Animator>();
         _anim.CrossFade(Run,0,0);
     }
 
-    public void SetAnim(string animName)
+    private void Update()
     {
-        switch(animName)
+        if (_playerRef._isGrounded)
         {
-            case "run":
-                _anim.CrossFade(Run, 0, 0);
-                break;
-            
-            case "backflip":
-                _anim.CrossFade(Backflip, 0, 0);
-                break;
-            
-            case "wait":
+            if (_playerRef._isWaiting)
+            {
                 _anim.CrossFade(Wait, 0, 0);
-                break;
-            
-            case "airbourne":
+            }
+            else if (_playerRef._rb2d.velocity.x == 0)
+            {
+                _anim.CrossFade(Idle, 0, 0);
+            }
+            else
+            {
+                _anim.CrossFade(Run, 0, 0);
+            }
+        }
+        else
+        {
+            if (_playerRef._wallRunning)
+            {
+                _anim.CrossFade(WallRun, 0, 0);
+            }
+            else if (_playerRef._wallSliding)
+            {
+                _anim.CrossFade(Wallslide, 0, 0);
+            }
+            else if (_playerRef._isWallJumping)
+            {
+                _anim.CrossFade(Backflip, 0, 0);
+            }
+            else
+            {
                 _anim.CrossFade(Airbourne, 0, 0);
-                break;
+            }
         }
     }
 }

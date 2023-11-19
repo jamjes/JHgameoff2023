@@ -277,7 +277,6 @@ GameObject:
   - component: {fileID: 356578112}
   - component: {fileID: 356578111}
   - component: {fileID: 356578109}
-  - component: {fileID: 356578108}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -324,7 +323,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.74415076, y: 2.0359762}
+  m_Size: {x: 0.5130603, y: 2.0359762}
   m_EdgeRadius: 0
 --- !u!50 &356578107
 Rigidbody2D:
@@ -347,19 +346,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &356578108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 356578104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cbdd30a36e24874e8170d1965676932, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _anim: {fileID: 1481220174}
 --- !u!114 &356578109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,15 +377,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 272d8e0d7dc30af42a27cd85a87270db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _groundSpeed: 14
-  _wallRunSpeed: 8
-  _jumpForce: 18
-  _reboundJumpForce: 13
-  _reboundMoveSpeed: 7
-  DebugMoveMode: 0
+  _rb2d: {fileID: 0}
+  _direction: 1
   _wallSliding: 0
   _wallRunning: 0
   _isWallJumping: 0
+  _isGrounded: 0
 --- !u!114 &356578112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -849,6 +832,7 @@ GameObject:
   - component: {fileID: 1481220172}
   - component: {fileID: 1481220173}
   - component: {fileID: 1481220174}
+  - component: {fileID: 1481220175}
   m_Layer: 0
   m_Name: PlayerGFX
   m_TagString: Untagged
@@ -909,7 +893,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d84171d8ee5af31489544f3a57016d74, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 932bc12f41d23cf42965a4cc8416b1c7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -951,6 +935,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1481220175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481220170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cbdd30a36e24874e8170d1965676932, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerRef: {fileID: 356578111}
 --- !u!1 &1694532151
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,7 +1111,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 6
+  orthographic size: 12
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
