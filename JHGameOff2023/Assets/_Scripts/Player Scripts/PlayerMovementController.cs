@@ -23,7 +23,6 @@ public class PlayerMovementController : MonoBehaviour
 
     private float _direction = 0;
     private Player _playerRef;
-    public int DebugMoveMode = 0;
     public bool _wallSliding = false;
     public bool _wallRunning = false;
     public bool _isWallJumping = false;
@@ -42,7 +41,6 @@ public class PlayerMovementController : MonoBehaviour
     {
         _rb2d = GetComponent<Rigidbody2D>();
         _playerRef = GetComponent<Player>();
-        if (DebugMoveMode == 0) _direction = 1;
     }
 
     private void Update()
@@ -74,8 +72,6 @@ public class PlayerMovementController : MonoBehaviour
 
         if (_canMove)
         {
-            if (DebugMoveMode == 1) _direction = Input.GetAxis("RunnerHorizontal");
-
             if (Input.GetButtonDown("RunnerJump") && grounded)
             {
                 Jump();
@@ -131,7 +127,7 @@ public class PlayerMovementController : MonoBehaviour
         }
         else
         {
-            if (_isWallJumping) //isWalled && Input.GetButtonDown("RunnerJump")
+            if (_isWallJumping)
             {
                 GetComponent<PlayerAnimationHandler>().SetAnim("backflip");
             }
