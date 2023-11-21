@@ -87,8 +87,9 @@ public class PlayerMovementController : MonoBehaviour
 
                 if (Input.GetAxis("RunnerVertical") == 1)
                 {
-                    _wallRunning = true;
-                    UpdateGravityScale(0);
+                    DisableMovement();
+                    _isWaiting = true;
+                    StartCoroutine(DelayedWallRun());
                 }
             }
 
@@ -188,5 +189,13 @@ public class PlayerMovementController : MonoBehaviour
         UpdateGravityScale(_fallGravityScale);
         _canMove = true;
         _isWaiting = false;
+    }
+
+    private IEnumerator DelayedWallRun() 
+    {
+        yield return new WaitForSeconds(.4f);
+        _isWaiting = false;
+        _canMove = true;
+        _wallRunning = true;
     }
 }

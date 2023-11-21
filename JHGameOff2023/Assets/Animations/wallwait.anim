@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: wallslide
+  m_Name: wallwait
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,12 +20,16 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: e3c4734e73ca3a0449080d931c20793b, type: 3}
+      value: {fileID: 21300000, guid: d0b8dcfb4b62fe440a1d366844b8deaf, type: 3}
+    - time: 0.125
+      value: {fileID: 21300000, guid: 905daa503b027c6498c2f199cd674aaf, type: 3}
+    - time: 0.25
+      value: {fileID: 21300000, guid: cb5cf60cbc9c10c4b96bc4b0305e13e7, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
     script: {fileID: 0}
-  m_SampleRate: 12
+  m_SampleRate: 8
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -40,13 +44,15 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: e3c4734e73ca3a0449080d931c20793b, type: 3}
+    - {fileID: 21300000, guid: d0b8dcfb4b62fe440a1d366844b8deaf, type: 3}
+    - {fileID: 21300000, guid: 905daa503b027c6498c2f199cd674aaf, type: 3}
+    - {fileID: 21300000, guid: cb5cf60cbc9c10c4b96bc4b0305e13e7, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.083333336
+    m_StopTime: 0.375
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

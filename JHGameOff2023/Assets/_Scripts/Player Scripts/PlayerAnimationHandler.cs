@@ -10,6 +10,7 @@ public class PlayerAnimationHandler : MonoBehaviour
     private static readonly int Airbourne = Animator.StringToHash("airbourne");
     private static readonly int Backflip = Animator.StringToHash("backflip");
     private static readonly int Wait = Animator.StringToHash("wait");
+    private static readonly int WallWait = Animator.StringToHash("wallwait");
     private static readonly int Wallslide = Animator.StringToHash("wallslide");
     private Animator _anim;
 
@@ -40,7 +41,11 @@ public class PlayerAnimationHandler : MonoBehaviour
         }
         else
         {
-            if (_playerRef._wallRunning)
+            if (_playerRef._isWaiting)
+            {
+                _anim.CrossFade(WallWait, 0, 0);
+            }
+            else if (_playerRef._wallRunning)
             {
                 _anim.CrossFade(WallRun, 0, 0);
             }
