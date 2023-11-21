@@ -9,9 +9,9 @@ public class PlayerMovementController : MonoBehaviour
 {
     public Rigidbody2D _rb2d;
     private bool _canMove = true;
-    /*[SerializeField]*/ private float _groundSpeed = 6;
-    /*[SerializeField]*/ private float _wallRunSpeed = 10;
-    /*[SerializeField]*/ private float _jumpForce = 16f;
+    /*[SerializeField]*/ private float _groundSpeed = 8;
+    /*[SerializeField]*/ private float _wallRunSpeed = 12;
+    /*[SerializeField]*/ private float _jumpForce = 20f;
     /*[SerializeField]*/ private float _reboundJumpForce = 12f;
     /*[SerializeField]*/ private float _reboundMoveSpeed = 8f;
 
@@ -51,8 +51,6 @@ public class PlayerMovementController : MonoBehaviour
         _isGrounded = grounded;
         bool walled = _playerRef.CollisionHandler.IsWalled(_direction);
 
-        //AnimationUpdate(grounded, walled);
-
         if (!walled)
         {
             _wallSliding = false;
@@ -60,6 +58,8 @@ public class PlayerMovementController : MonoBehaviour
 
         if (grounded)
         {
+            _wallSliding = false;
+
             if (_isWallJumping)
             {
                 _isWallJumping = false;
