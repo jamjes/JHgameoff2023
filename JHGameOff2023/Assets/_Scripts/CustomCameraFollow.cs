@@ -21,7 +21,11 @@ public class CustomCameraFollow : MonoBehaviour
 
         if (LookAt.transform.position.y - Camera.main.transform.position.y > 4)
         {
-            yPos = Camera.main.transform.position.y + (LookAt.transform.position.y - Camera.main.transform.position.y - 4);
+            yPos = Camera.main.transform.position.y + .1f; // + .2f; //(LookAt.transform.position.y - Camera.main.transform.position.y - 4);
+        }
+        else if (LookAt.transform.position.y - Camera.main.transform.position.y < -4)
+        {
+            yPos = Camera.main.transform.position.y - (LookAt.transform.position.y + Camera.main.transform.position.y + 4);
         }
             
         Camera.main.transform.position = new Vector3(xPos, yPos, -10);
