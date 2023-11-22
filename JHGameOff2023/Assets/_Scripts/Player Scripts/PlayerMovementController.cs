@@ -29,6 +29,7 @@ public class PlayerMovementController : MonoBehaviour
     public bool _isGrounded = false;
     public bool _isWaiting = false;
     public bool qte = false;
+    public bool shrink = false;
 
     private void OnEnable()
     {
@@ -114,13 +115,16 @@ public class PlayerMovementController : MonoBehaviour
                 _rb2d.velocity = new Vector2(_rb2d.velocity.x, 0);
             }
 
-            if (_rb2d.velocity.y > 0 && _rb2d.gravityScale != _jumpGravityScale)
+            if (!shrink)
             {
-                UpdateGravityScale(_jumpGravityScale);
-            }
-            else if (_rb2d.velocity.y < 0 && _rb2d.gravityScale != _fallGravityScale)
-            {
-                UpdateGravityScale(_fallGravityScale);
+                if (_rb2d.velocity.y > 0 && _rb2d.gravityScale != _jumpGravityScale)
+                {
+                    UpdateGravityScale(_jumpGravityScale);
+                }
+                else if (_rb2d.velocity.y < 0 && _rb2d.gravityScale != _fallGravityScale)
+                {
+                    UpdateGravityScale(_fallGravityScale);
+                }
             }
 
             if (_wallRunning && !walled)
@@ -215,10 +219,11 @@ public class PlayerMovementController : MonoBehaviour
 
     private void QTEWin()
     {
+        Debug.Log("QTE Win");
         qte = false;
         _direction = 1;
         _canMove = true;
-        UpdateGravityScale(_jumpGravityScale);
+        shrink = true;
         Jump();
     }
 
@@ -229,5 +234,21 @@ public class PlayerMovementController : MonoBehaviour
         _canMove = true;
         UpdateGravityScale(_jumpGravityScale);
         WallJump();
+    }
+
+    public void SetPhysicsMode(int mode)
+    {
+        if (mode == 0)
+        {
+            UpdateGravityScale(6);
+            _groundSpeed = 6;
+            _jumpForce = 15f;
+        }
+        else
+        {
+            shrink = false;
+            _groundSpeed = 8;
+            _jumpForce = 20f;
+        }
     }
 }

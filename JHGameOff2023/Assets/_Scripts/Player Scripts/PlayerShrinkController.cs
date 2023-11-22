@@ -7,6 +7,9 @@ public class PlayerShrinkController : MonoBehaviour
     public bool countdown = false;
     public float timer;
     public float timerRef;
+    public CustomCameraFollow _cam;
+    public PlayerMovementController _playerMovement;
+
     private void OnEnable()
     {
         PlayerQTEController.OnQTEWin += Shrink;
@@ -19,12 +22,15 @@ public class PlayerShrinkController : MonoBehaviour
 
     private void Shrink()
     {
-        StartCoroutine(ShrinkAfterDelay(.2f));
+        StartCoroutine(ShrinkAfterDelay(.1f));
+        _playerMovement.SetPhysicsMode(0);
     }
 
     private void UnShrink()
     {
         transform.localScale = new Vector3(1, 1, 1);
+        _cam.ResetCam();
+        _playerMovement.SetPhysicsMode(1);
     }
 
     private void Update()
@@ -44,7 +50,7 @@ public class PlayerShrinkController : MonoBehaviour
     private IEnumerator ShrinkAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        transform.localScale = new Vector3(.5f, .5f, .5f);
+        transform.localScale = new Vector3(.3f, .3f, .3f);
         //Calculate Countdown Duration
         timerRef = timer;
         countdown = true;
