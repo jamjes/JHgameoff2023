@@ -6,12 +6,16 @@ public class PlayerAnimationHandler : MonoBehaviour
 {
     private static readonly int Run = Animator.StringToHash("run");
     private static readonly int WallRun = Animator.StringToHash("wallrun");
+    private static readonly int WallRunFlip = Animator.StringToHash("wallrunflip");
     private static readonly int Idle = Animator.StringToHash("idle");
     private static readonly int Airbourne = Animator.StringToHash("airbourne");
     private static readonly int Backflip = Animator.StringToHash("backflip");
+    private static readonly int BackflipFlip = Animator.StringToHash("backflipflip");
     private static readonly int Wait = Animator.StringToHash("wait");
     private static readonly int WallWait = Animator.StringToHash("wallwait");
+    private static readonly int WallWaitFlip = Animator.StringToHash("wallwaitflip");
     private static readonly int Wallslide = Animator.StringToHash("wallslide");
+    private static readonly int WallslideFlip = Animator.StringToHash("wallslideflip");
     private Animator _anim;
 
     [SerializeField] private PlayerMovementController _playerRef;
@@ -43,19 +47,48 @@ public class PlayerAnimationHandler : MonoBehaviour
         {
             if (_playerRef._isWaiting)
             {
-                _anim.CrossFade(WallWait, 0, 0);
+                if (_playerRef._direction == 1)
+                {
+                    _anim.CrossFade(WallWait, 0, 0);
+                }
+                else
+                {
+                    _anim.CrossFade(WallWaitFlip, 0, 0);
+                }
             }
             else if (_playerRef._wallRunning)
             {
-                _anim.CrossFade(WallRun, 0, 0);
+                if (_playerRef._direction == 1)
+                {
+                    _anim.CrossFade(WallRun, 0, 0);
+                }
+                else
+                {
+                    _anim.CrossFade(WallRunFlip, 0, 0);
+                }
             }
             else if (_playerRef._wallSliding || _playerRef.qte)
             {
-                _anim.CrossFade(Wallslide, 0, 0);
+                if (_playerRef._direction == 1)
+                {
+                    _anim.CrossFade(Wallslide, 0, 0);
+                }
+                else
+                {
+                    _anim.CrossFade(WallslideFlip, 0, 0);
+                }
+                
             }
             else if (_playerRef._isWallJumping)
             {
-                _anim.CrossFade(Backflip, 0, 0);
+                if (_playerRef._direction == 1)
+                {
+                    _anim.CrossFade(Backflip, 0, 0);
+                }
+                else
+                {
+                    _anim.CrossFade(BackflipFlip, 0, 0);
+                }
             }
             else
             {
