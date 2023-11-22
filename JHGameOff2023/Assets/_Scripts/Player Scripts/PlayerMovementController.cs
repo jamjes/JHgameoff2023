@@ -12,8 +12,8 @@ public class PlayerMovementController : MonoBehaviour
     /*[SerializeField]*/ private float _groundSpeed = 8;
     /*[SerializeField]*/ private float _wallRunSpeed = 12;
     /*[SerializeField]*/ private float _jumpForce = 20f;
-    /*[SerializeField]*/ private float _reboundJumpForce = 12f;
-    /*[SerializeField]*/ private float _reboundMoveSpeed = 8f;
+    /*[SerializeField]*/ private float _reboundJumpForce = 15f;
+    /*[SerializeField]*/ private float _reboundMoveSpeed = 12f;
 
     private float _maxFallVelocity = -25;
     private float _maxSlideVelocity = -5;
@@ -160,7 +160,7 @@ public class PlayerMovementController : MonoBehaviour
 
         if (_wallRunning)
         {
-            _rb2d.velocity = new Vector2(0, _wallRunSpeed * _direction);
+            _rb2d.velocity = new Vector2(0, _wallRunSpeed);
         }
     }
 
