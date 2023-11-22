@@ -1,33 +1,33 @@
-﻿using System.Collections;
+﻿using Cinemachine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CustomCameraFollow : MonoBehaviour
 {
-    public GameObject LookAt;
-    public float xOffset = 8, yOffset;
+    public CinemachineVirtualCamera _cam;
 
-    private void Start()
+    private void OnEnable()
     {
-        Vector3 camPos = new Vector3(LookAt.transform.position.x + xOffset, LookAt.transform.position.y + yOffset, -10);
-        
-        Camera.main.transform.position = camPos;
+        PlayerCollisionHandler.OnQTEEnter += ZoomIn;
+        PlayerQTEController.OnQTEWin += ZoomOut;
+        PlayerQTEController.OnQTELoss += ZoomOut;
     }
 
-    private void FixedUpdate()
+    private void OnDisable()
     {
-        float xPos = LookAt.transform.position.x + xOffset;
-        float yPos = Camera.main.transform.position.y;
+        PlayerCollisionHandler.OnQTEEnter -= ZoomIn;
+        PlayerQTEController.OnQTEWin -= ZoomOut;
+        PlayerQTEController.OnQTELoss -= ZoomOut;
+    }
 
-        if (LookAt.transform.position.y - Camera.main.transform.position.y > 4)
-        {
-            yPos = Camera.main.transform.position.y + .1f; // + .2f; //(LookAt.transform.position.y - Camera.main.transform.position.y - 4);
-        }
-        else if (LookAt.transform.position.y - Camera.main.transform.position.y < -4)
-        {
-            yPos = Camera.main.transform.position.y - (LookAt.transform.position.y + Camera.main.transform.position.y + 4);
-        }
-            
-        Camera.main.transform.position = new Vector3(xPos, yPos, -10);
+    private void ZoomIn()
+    {
+        _cam.m_Lens.OrthographicSize = 6;
+    }
+
+    private void ZoomOut()
+    {
+        _cam.m_Lens.OrthographicSize = 10;
     }
 }

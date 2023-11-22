@@ -28,15 +28,22 @@ public class PlayerMovementController : MonoBehaviour
     public bool _isWallJumping = false;
     public bool _isGrounded = false;
     public bool _isWaiting = false;
+    public bool qte = false;
 
     private void OnEnable()
     {
         KillzoneEventManager.OnDeathEnter += DisableMovement;
+        PlayerCollisionHandler.OnQTEEnter += BeginQTE;
+        PlayerQTEController.OnQTEWin += QTEWin;
+        PlayerQTEController.OnQTELoss += QTELoss;
     }
 
     private void OnDisable()
     {
         KillzoneEventManager.OnDeathEnter -= DisableMovement;
+        PlayerCollisionHandler.OnQTEEnter -= BeginQTE;
+        PlayerQTEController.OnQTEWin -= QTEWin;
+        PlayerQTEController.OnQTELoss -= QTELoss;
     }
 
     private void Start()
@@ -153,7 +160,7 @@ public class PlayerMovementController : MonoBehaviour
 
         if (_wallRunning)
         {
-            _rb2d.velocity = new Vector2(0, _wallRunSpeed);
+            _rb2d.velocity = new Vector2(0, _wallRunSpeed * _direction);
         }
     }
 
@@ -169,7 +176,7 @@ public class PlayerMovementController : MonoBehaviour
         _rb2d.velocity = new Vector2(_groundSpeed * _direction, _reboundJumpForce);
     }
 
-    private void DisableMovement()
+    public void DisableMovement()
     {
         _canMove = false;
         UpdateGravityScale(0);
@@ -197,5 +204,30 @@ public class PlayerMovementController : MonoBehaviour
         _isWaiting = false;
         _canMove = true;
         _wallRunning = true;
+    }
+
+    private void BeginQTE()
+    {
+        DisableMovement();
+        _wallRunning = false;
+        qte = true;
+    }
+
+    private void QTEWin()
+    {
+        qte = false;
+        _direction = 1;
+        _canMove = true;
+        UpdateGravityScale(_jumpGravityScale);
+        Jump();
+    }
+
+    private void QTELoss()
+    {
+        qte = false;
+        _direction = 1;
+        _canMove = true;
+        UpdateGravityScale(_jumpGravityScale);
+        WallJump();
     }
 }

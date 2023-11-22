@@ -49,7 +49,7 @@ public class PlayerAnimationHandler : MonoBehaviour
             {
                 _anim.CrossFade(WallRun, 0, 0);
             }
-            else if (_playerRef._wallSliding)
+            else if (_playerRef._wallSliding || _playerRef.qte)
             {
                 _anim.CrossFade(Wallslide, 0, 0);
             }

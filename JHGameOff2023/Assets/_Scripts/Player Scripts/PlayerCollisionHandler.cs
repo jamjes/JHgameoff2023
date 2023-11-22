@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
 
 public class PlayerCollisionHandler : MonoBehaviour
@@ -10,10 +11,15 @@ public class PlayerCollisionHandler : MonoBehaviour
     [SerializeField] private LayerMask GroundLayer;
     [SerializeField] private LayerMask WallLayer;
     [SerializeField] private bool DEBUG_MODE = false;
+    private PlayerQTEController playerQTE;
+
+    public delegate void QTE();
+    public static event QTE OnQTEEnter;
 
     private void Start()
     {
         _boxCol = GetComponent<BoxCollider2D>();
+        playerQTE = GetComponent<PlayerQTEController>();
     }
 
     public bool IsGrounded()
@@ -28,6 +34,14 @@ public class PlayerCollisionHandler : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.BoxCast(_boxCol.bounds.center, _boxCol.bounds.size, 0f, Vector2.right * direction, _wallDetectionLeniency, WallLayer);
         return hit.collider != null;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Vent")
+        {
+            OnQTEEnter();
+        }
     }
 
     private void DisplayGroundRays(bool condition)
