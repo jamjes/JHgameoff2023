@@ -7,3 +7,8 @@ public interface IScoreSystem
 {
     void Increment(int amount);
 }
+
+public interface IAnimatable
+{
+    void SetAnim(string animName);
+}
