@@ -63,16 +63,19 @@ public class CustomCameraFollow : MonoBehaviour
 
     private void ZoomIn()
     {
-        _cam.m_Lens.OrthographicSize = zoomLens;
+        //_cam.m_Lens.OrthographicSize = zoomLens;
+        zoomIn = true;
     }
 
     private void ZoomOut()
     {
-        _cam.m_Lens.OrthographicSize = mainLens;
+        //_cam.m_Lens.OrthographicSize = mainLens;
+        zoomOut = true;
     }
 
     public void ResetCam()
     {
-        _cam.m_Lens.OrthographicSize = mainLens;
+        //_cam.m_Lens.OrthographicSize = mainLens;
+        zoomOut = true;
     }
 }
