@@ -7,13 +7,13 @@ using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
 {
-    public Rigidbody2D _rb2d;
+    public Rigidbody2D Rb2d { private set; get; }
     private bool _canMove = true;
-    /*[SerializeField]*/ private float _groundSpeed = 8;
-    /*[SerializeField]*/ private float _wallRunSpeed = 12;
-    /*[SerializeField]*/ private float _jumpForce = 20f;
-    /*[SerializeField]*/ private float _reboundJumpForce = 15f;
-    /*[SerializeField]*/ private float _reboundMoveSpeed = 12f;
+    private float _groundSpeed = 8;
+    private float _wallRunSpeed = 12;
+    private float _jumpForce = 20f;
+    private float _reboundJumpForce = 15f;
+    private float _reboundMoveSpeed = 12f;
 
     private float _maxFallVelocity = -25;
     private float _maxSlideVelocity = -5;
@@ -21,13 +21,13 @@ public class PlayerMovementController : MonoBehaviour
     private float _jumpGravityScale = 4;
     private float _fallGravityScale = 5;
 
-    public float _direction = 1;
+    public float Direction = 1;
     private Player _playerRef;
     public bool _wallSliding = false;
     public bool _wallRunning = false;
     public bool _isWallJumping = false;
     public bool _isGrounded = false;
-    public bool _isWaiting = false;
+    public bool IsWaiting = false;
     public bool qte = false;
     public bool shrink = false;
 
@@ -49,15 +49,15 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Start()
     {
-        _rb2d = GetComponent<Rigidbody2D>();
+        Rb2d = GetComponent<Rigidbody2D>();
         _playerRef = GetComponent<Player>();
     }
 
     private void Update()
     {
-        bool grounded = _playerRef.CollisionHandler.IsGrounded();
+        bool grounded = _playerRef.Collision.IsGrounded();
         _isGrounded = grounded;
-        bool walled = _playerRef.CollisionHandler.IsWalled(_direction);
+        bool walled = _playerRef.Collision.IsWalled(Direction);
 
         if (!walled)
         {
@@ -73,10 +73,10 @@ public class PlayerMovementController : MonoBehaviour
                 _isWallJumping = false;
             }
                 
-            if (_direction == -1)
+            if (Direction == -1)
             {
-                _direction = 0;
-                _isWaiting = true;
+                Direction = 0;
+                IsWaiting = true;
                 StartCoroutine(DelayedStart());
             }
 
@@ -89,14 +89,14 @@ public class PlayerMovementController : MonoBehaviour
                 Jump();
             }
 
-            if ((!grounded && walled) && _rb2d.velocity.y < 0)
+            if ((!grounded && walled) && Rb2d.velocity.y < 0)
             {
                 if (!_wallSliding) _wallSliding = true;
 
                 if (Input.GetAxis("RunnerVertical") == 1)
                 {
                     DisableMovement();
-                    _isWaiting = true;
+                    IsWaiting = true;
                     StartCoroutine(DelayedWallRun());
                 }
             }
@@ -106,22 +106,22 @@ public class PlayerMovementController : MonoBehaviour
                 WallJump();
             }
 
-            if (Input.GetButtonUp("RunnerJump") && _rb2d.velocity.y > 1)
+            if (Input.GetButtonUp("RunnerJump") && Rb2d.velocity.y > 1)
             {
-                _rb2d.velocity = new Vector2(_rb2d.velocity.x, 1);
+                Rb2d.velocity = new Vector2(Rb2d.velocity.x, 1);
             }
-            else if (Input.GetButtonUp("RunnerJump") && (_rb2d.velocity.y > 0 && _rb2d.velocity.y < 1))
+            else if (Input.GetButtonUp("RunnerJump") && (Rb2d.velocity.y > 0 && Rb2d.velocity.y < 1))
             {
-                _rb2d.velocity = new Vector2(_rb2d.velocity.x, 0);
+                Rb2d.velocity = new Vector2(Rb2d.velocity.x, 0);
             }
 
             if (!shrink)
             {
-                if (_rb2d.velocity.y > 0 && _rb2d.gravityScale != _jumpGravityScale)
+                if (Rb2d.velocity.y > 0 && Rb2d.gravityScale != _jumpGravityScale)
                 {
                     UpdateGravityScale(_jumpGravityScale);
                 }
-                else if (_rb2d.velocity.y < 0 && _rb2d.gravityScale != _fallGravityScale)
+                else if (Rb2d.velocity.y < 0 && Rb2d.gravityScale != _fallGravityScale)
                 {
                     UpdateGravityScale(_fallGravityScale);
                 }
@@ -159,54 +159,55 @@ public class PlayerMovementController : MonoBehaviour
                 xSpeed = _groundSpeed;
             }
 
-            _rb2d.velocity = new Vector2(xSpeed * _direction, Mathf.Clamp(_rb2d.velocity.y, yMaxVel, _jumpForce));
+            Rb2d.velocity = new Vector2(xSpeed * Direction, Mathf.Clamp(Rb2d.velocity.y, yMaxVel, _jumpForce));
         }
 
         if (_wallRunning)
         {
-            _rb2d.velocity = new Vector2(0, _wallRunSpeed);
+            Rb2d.velocity = new Vector2(0, _wallRunSpeed);
         }
     }
 
     private void Jump()
     {
-        _rb2d.velocity = new Vector2(_rb2d.velocity.x, _jumpForce);
+        Rb2d.velocity = new Vector2(Rb2d.velocity.x, _jumpForce);
     }
 
     private void WallJump()
     {
-        _direction *= -1;
+        Direction *= -1;
         _isWallJumping = true;
-        _rb2d.velocity = new Vector2(_groundSpeed * _direction, _reboundJumpForce);
+        Rb2d.velocity = new Vector2(_groundSpeed * Direction, _reboundJumpForce);
     }
 
     public void DisableMovement()
     {
         _canMove = false;
         UpdateGravityScale(0);
-        _rb2d.velocity = Vector2.zero;
+        Rb2d.velocity = Vector2.zero;
     }
 
     private void UpdateGravityScale(float newVal)
     {
-        _rb2d.gravityScale = newVal;
+        Rb2d.gravityScale = newVal;
     }
 
     private IEnumerator DelayedStart()
     {
         DisableMovement();
         yield return new WaitForSeconds(.4f);
-        _direction = 1;
+        Direction = 1;
         UpdateGravityScale(_fallGravityScale);
         _canMove = true;
-        _isWaiting = false;
+        IsWaiting = false;
     }
 
     private IEnumerator DelayedWallRun() 
     {
         yield return new WaitForSeconds(.4f);
-        _isWaiting = false;
+        IsWaiting = false;
         _canMove = true;
+        _wallSliding = false;
         _wallRunning = true;
     }
 
@@ -221,7 +222,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         Debug.Log("QTE Win");
         qte = false;
-        _direction = 1;
+        Direction = 1;
         _canMove = true;
         shrink = true;
         Jump();
@@ -230,7 +231,7 @@ public class PlayerMovementController : MonoBehaviour
     private void QTELoss()
     {
         qte = false;
-        _direction = 1;
+        Direction = 1;
         _canMove = true;
         UpdateGravityScale(_jumpGravityScale);
         WallJump();
@@ -250,5 +251,14 @@ public class PlayerMovementController : MonoBehaviour
             _groundSpeed = 8;
             _jumpForce = 20f;
         }
+    }
+
+    public void UpdateMovementSettings(float groundRunSpeed, float groundJumpForce, float wallRunSpeed, float wallJumpForce, float wallReboundSpeed)
+    {
+        _groundSpeed = groundRunSpeed;
+        _jumpForce = groundJumpForce;
+        _wallRunSpeed = wallRunSpeed;
+        _reboundJumpForce = wallJumpForce;
+        _reboundMoveSpeed = wallReboundSpeed;
     }
 }

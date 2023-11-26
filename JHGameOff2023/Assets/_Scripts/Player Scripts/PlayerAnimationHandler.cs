@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Player;
 
 public class PlayerAnimationHandler : MonoBehaviour
 {
@@ -26,6 +27,48 @@ public class PlayerAnimationHandler : MonoBehaviour
         _anim.CrossFade(Run,0,0);
     }
 
+    public void PlayAnim(PlayerState newState)
+    {
+        switch (newState) 
+        {
+            case PlayerState.Idle:
+                _anim.CrossFade(Idle, 0, 0);
+                break;
+
+            case PlayerState.Landing:
+                _anim.CrossFade(Wait, 0, 0);
+                break;
+
+            case PlayerState.Running:
+                _anim.CrossFade(Run, 0, 0);
+                break;
+                
+            case PlayerState.Airbourne:
+                _anim.CrossFade(Airbourne, 0, 0);
+                break;
+                
+            case PlayerState.WallSliding:
+                _anim.CrossFade(Wallslide, 0, 0);
+                break;
+            case PlayerState.WallWaiting:
+                _anim.CrossFade(WallWait, 0, 0);
+                break;
+            case PlayerState.WallRunning:
+                _anim.CrossFade(WallRun, 0, 0);
+                break;
+
+            case PlayerState.WallJumping:
+                _anim.CrossFade(Backflip, 0, 0);
+                break;
+            /*
+            case PlayerState.QTEvent:
+                _anim.CrossFade(Wallslide, 0, 0);
+                break;
+            */
+        }
+    }
+
+    /*
     private void Update()
     {
         if (_playerRef._isGrounded)
@@ -96,4 +139,5 @@ public class PlayerAnimationHandler : MonoBehaviour
             }
         }
     }
+    */
 }

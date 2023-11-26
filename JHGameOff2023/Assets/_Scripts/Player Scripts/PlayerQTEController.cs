@@ -13,7 +13,8 @@ public class PlayerQTEController : MonoBehaviour
     public static event QTE OnQTEWin;
     public static event QTE OnQTELoss;
 
-    public float timerRef = 8;
+    public float Timer;
+    private float timerRef;
 
     private void OnEnable()
     {
@@ -30,6 +31,7 @@ public class PlayerQTEController : MonoBehaviour
         GenerateButtons();
         run = true;
         pointer = 0;
+        timerRef = Timer;
         
     }
 
@@ -70,7 +72,7 @@ public class PlayerQTEController : MonoBehaviour
                 if (pointer == 3)
                 {
                     run = false;
-                    timerRef = 8;
+                    timerRef = Timer;
                     OnQTEWin();
                 }
             }
@@ -78,7 +80,7 @@ public class PlayerQTEController : MonoBehaviour
             if (timerRef <= 0)
             {
                 run = false;
-                timerRef = 8;
+                timerRef = Timer;
                 OnQTELoss();
             }
         }

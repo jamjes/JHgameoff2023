@@ -24,7 +24,6 @@ public class PlayerCollisionHandler : MonoBehaviour
 
     public bool IsGrounded()
     {
-
         RaycastHit2D hit = Physics2D.BoxCast(_boxCol.bounds.center, _boxCol.bounds.size, 0f, Vector2.down, _groundDetectionLeniency, GroundLayer);
         //DisplayGroundRays(hit.collider != null ? true : false);
         return hit.collider != null;
