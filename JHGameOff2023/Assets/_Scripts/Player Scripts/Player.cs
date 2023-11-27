@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
     public PlayerMovementController Movement { private set; get; }
     public PlayerAnimationHandler Animation { private set; get; }
 
+    public ParticleSystem LandParticles;
+
     public bool IsDead;
 
     private void Start()
@@ -50,6 +52,7 @@ public class Player : MonoBehaviour
                 }
                 else if (Movement.Rb2d.velocity.x == 0 && Movement.IsWaiting)
                 {
+                    LandParticles.Play();
                     SetState(PlayerState.Landing);
                 }
                 else if (Movement.Rb2d.velocity.x != 0)
