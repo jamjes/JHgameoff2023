@@ -71,14 +71,17 @@ public class PlayerMovementController : MonoBehaviour
             if (_isWallJumping)
             {
                 _isWallJumping = false;
-            }
-                
-            if (Direction == -1)
-            {
-                Direction = 0;
+
+                if (Direction == -1)
+                {
+                    Direction = 0;
+                }
+
                 IsWaiting = true;
                 StartCoroutine(DelayedStart());
             }
+                
+            
 
         }
 

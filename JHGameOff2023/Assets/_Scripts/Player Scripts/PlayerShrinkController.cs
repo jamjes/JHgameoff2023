@@ -7,8 +7,10 @@ public class PlayerShrinkController : MonoBehaviour
     public bool countdown = false;
     public float timer;
     public float timerRef;
-    public CustomCameraFollow _cam;
     public PlayerMovementController _playerMovement;
+    public delegate void ShrinkEvent();
+
+    public static event ShrinkEvent OnShrinkEnd;
 
     private void OnEnable()
     {
@@ -29,8 +31,8 @@ public class PlayerShrinkController : MonoBehaviour
     private void UnShrink()
     {
         transform.localScale = new Vector3(1, 1, 1);
-        _cam.ResetCam();
         _playerMovement.SetPhysicsMode(1);
+        OnShrinkEnd();
     }
 
     private void Update()

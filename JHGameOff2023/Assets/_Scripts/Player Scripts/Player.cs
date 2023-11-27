@@ -52,7 +52,6 @@ public class Player : MonoBehaviour
                 }
                 else if (Movement.Rb2d.velocity.x == 0 && Movement.IsWaiting)
                 {
-                    LandParticles.Play();
                     SetState(PlayerState.Landing);
                 }
                 else if (Movement.Rb2d.velocity.x != 0)

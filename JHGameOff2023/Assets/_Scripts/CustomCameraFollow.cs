@@ -11,7 +11,6 @@ public class CustomCameraFollow : MonoBehaviour
     public float zoomForce = .03f;
     private bool zoomIn = false, zoomOut = false;
 
-
     private void Start()
     {
         mainLens = _cam.m_Lens.OrthographicSize;
@@ -20,11 +19,11 @@ public class CustomCameraFollow : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && !zoomIn)
+        if (Input.GetKeyDown(KeyCode.Alpha1) && (!zoomIn && !zoomOut))
         {
             zoomIn = true;
         }
-        else if (Input.GetKeyDown(KeyCode.E) && !zoomOut)
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && (!zoomIn && !zoomOut))
         {
             zoomOut = true;
         }
@@ -53,21 +52,23 @@ public class CustomCameraFollow : MonoBehaviour
     {
         PlayerCollisionHandler.OnQTEEnter += ZoomIn;
         PlayerQTEController.OnQTELoss += ZoomOut;
+        PlayerShrinkController.OnShrinkEnd += ZoomOut;
     }
 
     private void OnDisable()
     {
         PlayerCollisionHandler.OnQTEEnter -= ZoomIn;
         PlayerQTEController.OnQTELoss -= ZoomOut;
+        PlayerShrinkController.OnShrinkEnd -= ZoomOut;
     }
 
-    private void ZoomIn()
+    public void ZoomIn()
     {
         //_cam.m_Lens.OrthographicSize = zoomLens;
         zoomIn = true;
     }
 
-    private void ZoomOut()
+    public void ZoomOut()
     {
         //_cam.m_Lens.OrthographicSize = mainLens;
         zoomOut = true;
@@ -76,6 +77,6 @@ public class CustomCameraFollow : MonoBehaviour
     public void ResetCam()
     {
         //_cam.m_Lens.OrthographicSize = mainLens;
-        zoomOut = true;
+        zoomOut = true; 
     }
 }
