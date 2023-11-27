@@ -48,17 +48,45 @@ public class PlayerAnimationHandler : MonoBehaviour
                 break;
                 
             case PlayerState.WallSliding:
-                _anim.CrossFade(Wallslide, 0, 0);
+                if (_playerRef.Direction == 1)
+                {
+                    _anim.CrossFade(Wallslide, 0, 0);
+                }
+                else
+                {
+                    _anim.CrossFade(WallslideFlip, 0, 0);
+                }
                 break;
             case PlayerState.WallWaiting:
-                _anim.CrossFade(WallWait, 0, 0);
+                if (_playerRef.Direction == 1)
+                {
+                    _anim.CrossFade(WallWait, 0, 0);
+                }
+                else
+                {
+                    _anim.CrossFade(WallWaitFlip, 0, 0);
+                }
                 break;
             case PlayerState.WallRunning:
-                _anim.CrossFade(WallRun, 0, 0);
+                if (_playerRef.Direction == 1)
+                {
+                    _anim.CrossFade(WallRun, 0, 0);
+                }
+                else
+                {
+                    _anim.CrossFade(WallRunFlip, 0, 0);
+                }
                 break;
 
             case PlayerState.WallJumping:
-                _anim.CrossFade(Backflip, 0, 0);
+                if (_playerRef.Direction == 1)
+                {
+                    _anim.CrossFade(BackflipFlip, 0, 0);
+                }
+                else
+                {
+                    _anim.CrossFade(Backflip, 0, 0);
+                }
                 break;
             /*
             case PlayerState.QTEvent:
