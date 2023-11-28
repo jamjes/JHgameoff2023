@@ -7,7 +7,7 @@ public class PlayerCollisionHandler : MonoBehaviour
 {
     private BoxCollider2D _boxCol;
     private float _wallDetectionLeniency = .3f;
-    private float _groundDetectionLeniency = .1f;
+    private float _groundDetectionLeniency = .3f;
     [SerializeField] private LayerMask GroundLayer;
     [SerializeField] private LayerMask WallLayer;
     [SerializeField] private bool DEBUG_MODE = false;
