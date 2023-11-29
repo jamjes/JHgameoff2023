@@ -8,16 +8,26 @@ public class LevelTransitionHandler : MonoBehaviour
 {
     public KeyCode trigger;
     public string targetScene;
-    public GameObject OptionsPanel, MainPanel;
+    public GameObject OptionsPanel, MainPanel, title;
+    public string gameScene, pauseScene;
+    public bool pauseMenuOpen = false;
+
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
 
     private void OnEnable()
     {
         KillzoneEventManager.OnDeathEnter += Restart;
+        Player.OnPauseEnter += PauseGame;
     }
 
     private void OnDisable()
     {
         KillzoneEventManager.OnDeathEnter -= Restart;
+        Player.OnPauseEnter -= PauseGame;
     }
 
     void Update()
@@ -50,6 +60,9 @@ public class LevelTransitionHandler : MonoBehaviour
     public void LoadMainLevel()
     {
         Debug.Log("Load Game from Beginning");
+        SceneManager.LoadScene(gameScene);
+        MainPanel.SetActive(false);
+        title.SetActive(false);
     }
 
     public void LoadCredits()
@@ -89,7 +102,17 @@ public class LevelTransitionHandler : MonoBehaviour
 
     public void PauseGame()
     {
-        Debug.Log("Game is Paused");
+        if (!pauseMenuOpen)
+        {
+            Debug.Log("Game is Paused");
+            SceneManager.LoadScene(pauseScene, LoadSceneMode.Additive);
+            pauseMenuOpen = true;
+        }
+        else
+        {
+            Debug.Log("Game already Paused");
+        }
+        
     }
 
     public void ResumeGame()
