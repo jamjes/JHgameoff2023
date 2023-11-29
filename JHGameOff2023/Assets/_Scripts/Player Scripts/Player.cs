@@ -24,9 +24,11 @@ public class Player : MonoBehaviour
     public PlayerMovementController Movement { private set; get; }
     public PlayerAnimationHandler Animation { private set; get; }
 
-    public ParticleSystem LandParticles;
-
     public bool IsDead;
+    public GameSettings Settings;
+
+    public delegate void Level();
+    public static event Level OnPauseEnter;
 
     private void Start()
     {
@@ -37,6 +39,15 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        //if (Input.GetButtonDown("Pause"))
+        //{
+            //if (OnPauseEnter != null)
+            //{
+                //OnPauseEnter();
+                //Debug.Log("Pause Event Called");
+            //}
+        //}
+        
         if (Movement.qte)
         {
             Debug.Log("QTE!!");

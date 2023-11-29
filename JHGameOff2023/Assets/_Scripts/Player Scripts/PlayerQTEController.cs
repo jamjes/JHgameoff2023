@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerQTEController : MonoBehaviour
 {
@@ -16,6 +18,10 @@ public class PlayerQTEController : MonoBehaviour
     public float Timer;
     private float timerRef;
 
+    public Canvas PlayerHUD;
+    public TextMeshProUGUI[] keyLabels;
+    public Image[] keyBGs;
+
     private void OnEnable()
     {
         PlayerCollisionHandler.OnQTEEnter += Run;
@@ -26,33 +32,49 @@ public class PlayerQTEController : MonoBehaviour
         PlayerCollisionHandler.OnQTEEnter -= Run;
     }
 
+    private void Start()
+    {
+        if (PlayerHUD.gameObject.activeSelf)
+        {
+            PlayerHUD.gameObject.SetActive(false);
+        }
+    }
+
     private void Run()
     {
         GenerateButtons();
         run = true;
         pointer = 0;
         timerRef = Timer;
-        
+        PlayerHUD.gameObject.SetActive(true);
+        foreach(Image i in keyBGs)
+        {
+            i.color = Color.white;
+        }
+
     }
 
     private void GenerateButtons()
     {
         for (int pointer = 0; pointer < 3; pointer++)
         {
-            int ran = Random.Range(0, 1);
+            int ran = Random.Range(0, 3);
 
             switch(ran)
             {
                 case 0:
                     Buttons[pointer] = "Button1";
+                    keyLabels[pointer].text = "Q";
                     break;
 
                 case 1:
                     Buttons[pointer] = "Button2";
+                    keyLabels[pointer].text = "W";
                     break;
 
                 case 2:
                     Buttons[pointer] = "Button3";
+                    keyLabels[pointer].text = "E";
                     break;
             }
         }
@@ -67,13 +89,15 @@ public class PlayerQTEController : MonoBehaviour
             if (Input.GetButtonDown(Buttons[pointer]))
             {
                 Buttons[pointer] = "CORRECT";
+                keyBGs[pointer].color = Color.green;
                 pointer++;
 
                 if (pointer == 3)
                 {
                     run = false;
                     timerRef = Timer;
-                    OnQTEWin();
+                    if (OnQTEWin != null) OnQTEWin();
+                    PlayerHUD.gameObject.SetActive(false);
                 }
             }
 
@@ -81,7 +105,8 @@ public class PlayerQTEController : MonoBehaviour
             {
                 run = false;
                 timerRef = Timer;
-                OnQTELoss();
+                if (OnQTELoss != null) OnQTELoss();
+                PlayerHUD.gameObject.SetActive(false);
             }
         }
     }
