@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerShrinkController : MonoBehaviour
 {
     public bool countdown = false;
-    public float timer;
+    public float Timer;
     public float timerRef;
     public PlayerMovementController _playerMovement;
     public delegate void ShrinkEvent();
@@ -44,7 +44,7 @@ public class PlayerShrinkController : MonoBehaviour
             {
                 UnShrink();
                 countdown = false;
-                timerRef = timer;
+                timerRef = Timer;
             }
         }
     }
@@ -54,7 +54,7 @@ public class PlayerShrinkController : MonoBehaviour
         yield return new WaitForSeconds(delay);
         transform.localScale = new Vector3(.3f, .3f, .3f);
         //Calculate Countdown Duration
-        timerRef = timer;
+        timerRef = Timer;
         countdown = true;
     }
 }
