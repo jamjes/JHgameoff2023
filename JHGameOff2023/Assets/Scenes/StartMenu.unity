@@ -860,6 +860,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trigger: 0
   targetScene: 
+  OptionsPanel: {fileID: 1139382260}
+  MainPanel: {fileID: 1949750175}
 --- !u!1 &753002718
 GameObject:
   m_ObjectHideFlags: 0
@@ -1207,7 +1209,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 996595145}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 701611633}
+        m_MethodName: EndGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &996595145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1601,7 +1614,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1139382261
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1703,7 +1716,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1378474255}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 701611633}
+        m_MethodName: OpenOptionsMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1378474255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1822,7 +1846,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1380333105}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 701611633}
+        m_MethodName: ToggleMusic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1380333105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1941,7 +1976,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1382541719}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 701611633}
+        m_MethodName: ToggleSoundFX
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1382541719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2228,6 +2274,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trigger: 32
   targetScene: TechDemo
+  OptionsPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
 --- !u!1 &1706620252
 GameObject:
   m_ObjectHideFlags: 0
@@ -2375,7 +2423,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1839154869}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 701611633}
+        m_MethodName: LoadMainLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1839154869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2532,7 +2591,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2024898579}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 701611633}
+        m_MethodName: CloseOptionsMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2024898579
 MonoBehaviour:
   m_ObjectHideFlags: 0
