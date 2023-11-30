@@ -5,9 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Mana
-  - Vent
   - VentIn
   - VentOut
+  - End
   layers:
   - Default
   - TransparentFX

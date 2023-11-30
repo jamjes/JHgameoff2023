@@ -23,7 +23,7 @@ public class MainMenu : MonoBehaviour
 
     public void LoadGame()
     {
-        SceneManager.LoadScene("TechDemo");
+        SceneManager.LoadScene("Level 1");
     }
 
     public void OpenOptionsMenu()

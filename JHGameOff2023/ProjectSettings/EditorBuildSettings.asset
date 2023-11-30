@@ -8,13 +8,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/StartMenu.unity
     guid: f1fede4e20386274ea1b2eb0172bde91
-  - enabled: 0
-    path: Assets/Scenes/Main.unity
-    guid: 36a95da529c41134da947ea3b57d028a
   - enabled: 1
+    path: Assets/Blockout of ideas/Level 1.unity
+    guid: 82c2f57c91e52a04ca03b39c064013e1
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: 36a95da529c41134da947ea3b57d028a
+  - enabled: 0
     path: Assets/Scenes/TechDemo.unity
     guid: 28e3f8b93fb8b6f4ca5074a638ce7681
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PauseMenu.unity
     guid: b492f556ea3bbef45903e1bfb9013543
   m_configObjects: {}
