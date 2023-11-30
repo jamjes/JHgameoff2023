@@ -58,7 +58,7 @@ public class PlayerQTEController : MonoBehaviour
     {
         for (int pointer = 0; pointer < 3; pointer++)
         {
-            int ran = Random.Range(0, 3);
+            int ran = Random.Range(0, 2);
 
             switch(ran)
             {

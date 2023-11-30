@@ -15,6 +15,7 @@ public class PlayerCollisionHandler : MonoBehaviour
 
     public delegate void QTE();
     public static event QTE OnQTEEnter;
+    public static event QTE OnShrinkExit;
 
     private void Start()
     {
@@ -37,9 +38,13 @@ public class PlayerCollisionHandler : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Vent")
+        if (collision.tag == "VentIn")
         {
             OnQTEEnter();
+        }
+        else if (collision.tag == "VentOut")
+        {
+            OnShrinkExit();
         }
     }
 

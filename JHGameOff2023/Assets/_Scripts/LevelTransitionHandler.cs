@@ -13,21 +13,14 @@ public class LevelTransitionHandler : MonoBehaviour
     public bool pauseMenuOpen = false;
 
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(this);
-    }
-
     private void OnEnable()
     {
         KillzoneEventManager.OnDeathEnter += Restart;
-        Player.OnPauseEnter += PauseGame;
     }
 
     private void OnDisable()
     {
         KillzoneEventManager.OnDeathEnter -= Restart;
-        Player.OnPauseEnter -= PauseGame;
     }
 
     void Update()
@@ -52,7 +45,7 @@ public class LevelTransitionHandler : MonoBehaviour
 
     #endregion
 
-    public void LoadMainMenu()
+    /*public void LoadMainMenu()
     {
         Debug.Log("Go To Main Menu");
     }
@@ -118,5 +111,5 @@ public class LevelTransitionHandler : MonoBehaviour
     public void ResumeGame()
     {
         Debug.Log("Resuming Game");
-    }
+    }*/
 }

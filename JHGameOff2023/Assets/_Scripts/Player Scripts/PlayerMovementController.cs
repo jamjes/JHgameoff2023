@@ -9,11 +9,11 @@ public class PlayerMovementController : MonoBehaviour
 {
     public Rigidbody2D Rb2d { private set; get; }
     private bool _canMove = true;
-    private float _groundSpeed = 8;
-    private float _wallRunSpeed = 12;
-    private float _jumpForce = 20f;
-    private float _reboundJumpForce = 15f;
-    private float _reboundMoveSpeed = 12f;
+    [SerializeField] private float _groundSpeed = 8;
+    [SerializeField] private float _wallRunSpeed = 12;
+    [SerializeField] private float _jumpForce = 20f;
+    [SerializeField] private float _reboundJumpForce = 15f;
+    [SerializeField] private float _reboundMoveSpeed = 12f;
 
     private float _maxFallVelocity = -25;
     private float _maxSlideVelocity = -5;
@@ -247,12 +247,14 @@ public class PlayerMovementController : MonoBehaviour
             UpdateGravityScale(6);
             _groundSpeed = 6;
             _jumpForce = 15f;
+            _wallRunSpeed = 10;
         }
         else
         {
             shrink = false;
-            _groundSpeed = 8;
+            _groundSpeed = 10;
             _jumpForce = 20f;
+            _wallRunSpeed = 15;
         }
     }
 

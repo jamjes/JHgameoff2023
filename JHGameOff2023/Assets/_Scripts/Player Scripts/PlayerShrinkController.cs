@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Cinemachine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,17 +10,18 @@ public class PlayerShrinkController : MonoBehaviour
     public float timerRef;
     public PlayerMovementController _playerMovement;
     public delegate void ShrinkEvent();
-
     public static event ShrinkEvent OnShrinkEnd;
 
     private void OnEnable()
     {
         PlayerQTEController.OnQTEWin += Shrink;
+        PlayerCollisionHandler.OnShrinkExit += UnShrink;
     }
 
     private void OnDisable()
     {
         PlayerQTEController.OnQTEWin -= Shrink;
+        PlayerCollisionHandler.OnShrinkExit -= UnShrink;
     }
 
     private void Shrink()
@@ -37,7 +39,7 @@ public class PlayerShrinkController : MonoBehaviour
 
     private void Update()
     {
-        if (countdown)
+        /*if (countdown)
         {
             timerRef -= Time.deltaTime;
             if (timerRef <= 0)
@@ -46,7 +48,7 @@ public class PlayerShrinkController : MonoBehaviour
                 countdown = false;
                 timerRef = Timer;
             }
-        }
+        }*/
     }
 
     private IEnumerator ShrinkAfterDelay(float delay)
@@ -54,6 +56,7 @@ public class PlayerShrinkController : MonoBehaviour
         yield return new WaitForSeconds(delay);
         transform.localScale = new Vector3(.3f, .3f, .3f);
         //Calculate Countdown Duration
+        Debug.Log("Shrink");
         timerRef = Timer;
         countdown = true;
     }

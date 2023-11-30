@@ -68,6 +68,7 @@ public class Player : MonoBehaviour
                 else if (Movement.Rb2d.velocity.x != 0)
                 {
                     SetState(PlayerState.Running);
+                    SetState(PlayerState.Running);
                 }
             }
             else if (!Collision.IsGrounded())

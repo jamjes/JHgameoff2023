@@ -8,13 +8,13 @@ public class CustomCameraFollow : MonoBehaviour
     public CinemachineVirtualCamera _cam;
     private float mainLens;
     private float zoomLens;
-    public float zoomForce = .03f;
+    public float zoomForce = .1f;
     private bool zoomIn = false, zoomOut = false;
 
     private void Start()
     {
         mainLens = _cam.m_Lens.OrthographicSize;
-        zoomLens = mainLens - 2;
+        zoomLens = mainLens - 6;
     }
 
     private void Update()
@@ -51,6 +51,7 @@ public class CustomCameraFollow : MonoBehaviour
     private void OnEnable()
     {
         PlayerCollisionHandler.OnQTEEnter += ZoomIn;
+        PlayerCollisionHandler.OnShrinkExit += ZoomOut;
         PlayerQTEController.OnQTELoss += ZoomOut;
         PlayerShrinkController.OnShrinkEnd += ZoomOut;
     }
@@ -58,6 +59,7 @@ public class CustomCameraFollow : MonoBehaviour
     private void OnDisable()
     {
         PlayerCollisionHandler.OnQTEEnter -= ZoomIn;
+        PlayerCollisionHandler.OnShrinkExit -= ZoomOut;
         PlayerQTEController.OnQTELoss -= ZoomOut;
         PlayerShrinkController.OnShrinkEnd -= ZoomOut;
     }
