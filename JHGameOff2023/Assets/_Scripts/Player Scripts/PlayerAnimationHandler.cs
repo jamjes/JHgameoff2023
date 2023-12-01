@@ -24,7 +24,7 @@ public class PlayerAnimationHandler : MonoBehaviour
     private void Start()
     {
         _anim = GetComponent<Animator>();
-        _anim.CrossFade(Run,0,0);
+        _anim.CrossFade(Idle,0,0);
     }
 
     public void PlayAnim(PlayerState newState)

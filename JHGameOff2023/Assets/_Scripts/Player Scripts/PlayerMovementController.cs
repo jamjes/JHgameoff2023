@@ -2,13 +2,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
 {
     public Rigidbody2D Rb2d { private set; get; }
-    private bool _canMove = true;
+    public bool CanMove = false;
     [SerializeField] private float _groundSpeed = 8;
     [SerializeField] private float _wallRunSpeed = 12;
     [SerializeField] private float _jumpForce = 20f;
@@ -74,10 +75,20 @@ public class PlayerMovementController : MonoBehaviour
     {
         Rb2d = GetComponent<Rigidbody2D>();
         _playerRef = GetComponent<Player>();
+        Direction = 0;
+        StartCoroutine(DelayedBegin());
+    }
+
+    IEnumerator DelayedBegin()
+    {
+        yield return new WaitForSeconds(3);
+        CanMove = true;
+        Direction = 1;
     }
 
     private void Update()
     {
+
         bool grounded = _playerRef.Collision.IsGrounded();
         _isGrounded = grounded;
         bool walled = _playerRef.Collision.IsWalled(Direction);
@@ -108,7 +119,7 @@ public class PlayerMovementController : MonoBehaviour
 
         }
 
-        if (_canMove)
+        if (CanMove)
         {
             if (Input.GetButtonDown("RunnerJump") && grounded)
             {
@@ -165,7 +176,7 @@ public class PlayerMovementController : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (_canMove)
+        if (CanMove)
         {
             float yMaxVel;
             float xSpeed;
@@ -211,7 +222,7 @@ public class PlayerMovementController : MonoBehaviour
 
     public void DisableMovement()
     {
-        _canMove = false;
+        CanMove = false;
         UpdateGravityScale(0);
         Rb2d.velocity = Vector2.zero;
     }
@@ -227,7 +238,7 @@ public class PlayerMovementController : MonoBehaviour
         yield return new WaitForSeconds(.4f);
         Direction = 1;
         UpdateGravityScale(_fallGravityScale);
-        _canMove = true;
+        CanMove = true;
         IsWaiting = false;
     }
 
@@ -235,7 +246,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         yield return new WaitForSeconds(.4f);
         IsWaiting = false;
-        _canMove = true;
+        CanMove = true;
         _wallSliding = false;
         WallRunSound.Play();
         _wallRunning = true;
@@ -254,7 +265,7 @@ public class PlayerMovementController : MonoBehaviour
         Debug.Log("QTE Win");
         qte = false;
         Direction = 1;
-        _canMove = true;
+        CanMove = true;
         shrink = true;
         ShrinkSound.Play();
         Jump();
@@ -264,7 +275,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         qte = false;
         Direction = 1;
-        _canMove = true;
+        CanMove = true;
         UpdateGravityScale(_jumpGravityScale);
         WallJump();
     }

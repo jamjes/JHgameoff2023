@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
 
     public bool IsDead;
     public GameSettings Settings;
-
+    private bool started = false;
     public delegate void Level();
     public static event Level OnPauseEnter;
 
@@ -86,7 +86,12 @@ public class Player : MonoBehaviour
             BGMusic.volume = .8f;
             BGMusic.Play();
         }
+
+        CurrentState = PlayerState.Idle;
+        
     }
+
+    
 
     private void Update()
     {
@@ -98,6 +103,7 @@ public class Player : MonoBehaviour
                 //Debug.Log("Pause Event Called");
             //}
         //}
+        
         
         if (Movement.qte)
         {
@@ -119,8 +125,7 @@ public class Player : MonoBehaviour
                 }
                 else if (Movement.Rb2d.velocity.x != 0)
                 {
-                    SetState(PlayerState.Running);
-                    SetState(PlayerState.Running);
+                    if (Movement.CanMove) SetState(PlayerState.Running);
                 }
             }
             else if (!Collision.IsGrounded())
@@ -157,6 +162,7 @@ public class Player : MonoBehaviour
                 }
             }
         }
+        
     }
 
     private void SetState(PlayerState newState)
