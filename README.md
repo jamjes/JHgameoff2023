@@ -1,5 +1,6 @@
 # Neon Runner
 ## A 2D Pixel Art Runner Game, Submitted for Github's Game Off 2023
+<img src="\Screenshots\Game Jam November 2023\NeonRunnerCoverPhoto.png">
 
 <strong> Team Members: </strong>
 
@@ -21,4 +22,3 @@ Runner, Platformer
 * [SPACE] - Jump / Wall Jump
 * [W] - Wall Run
 * [Q], [W], [E] - Quick Time Event Keys 
-
