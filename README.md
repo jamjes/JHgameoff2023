@@ -1,5 +1,5 @@
 # Neon Runner (For GitHub Game Off 2023)
-
+- Cover Image
 A 2D pixel art cityscape runner game.
 
 Team:
@@ -16,3 +16,6 @@ Controls:
 [SPACE] - Jump / Wall Jump
 [W] - Wall Run
 [Q], [W], [E] - Quick Time Event Keys
+
+Gallery:
+- 4 Images
