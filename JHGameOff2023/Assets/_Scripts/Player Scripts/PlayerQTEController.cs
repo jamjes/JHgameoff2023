@@ -22,6 +22,8 @@ public class PlayerQTEController : MonoBehaviour
     public TextMeshProUGUI[] keyLabels;
     public Image[] keyBGs;
 
+    public AudioSource Sound;
+
     private void OnEnable()
     {
         PlayerCollisionHandler.OnQTEEnter += Run;
@@ -107,6 +109,7 @@ public class PlayerQTEController : MonoBehaviour
                 timerRef = Timer;
                 if (OnQTELoss != null) OnQTELoss();
                 PlayerHUD.gameObject.SetActive(false);
+                Sound.Play();
             }
         }
     }

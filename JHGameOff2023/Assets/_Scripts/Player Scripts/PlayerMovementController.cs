@@ -31,6 +31,9 @@ public class PlayerMovementController : MonoBehaviour
     public bool qte = false;
     public bool shrink = false;
 
+    public AudioSource BackflipSound, JumpSound, ShrinkSound, WallRunSound;
+
+
     private void OnEnable()
     {
         KillzoneEventManager.OnDeathEnter += DisableMovement;
@@ -89,6 +92,7 @@ public class PlayerMovementController : MonoBehaviour
         {
             if (Input.GetButtonDown("RunnerJump") && grounded)
             {
+                JumpSound.Play();
                 Jump();
             }
 
@@ -106,6 +110,7 @@ public class PlayerMovementController : MonoBehaviour
 
             if (Input.GetButtonDown("RunnerJump") && (!grounded && walled))
             {
+                BackflipSound.Play();
                 WallJump();
             }
 
@@ -133,6 +138,7 @@ public class PlayerMovementController : MonoBehaviour
             if (_wallRunning && !walled)
             {
                 _wallRunning = false;
+                WallRunSound.Stop();
                 UpdateGravityScale(_jumpGravityScale);
             }
         }
@@ -211,12 +217,14 @@ public class PlayerMovementController : MonoBehaviour
         IsWaiting = false;
         _canMove = true;
         _wallSliding = false;
+        WallRunSound.Play();
         _wallRunning = true;
     }
 
     private void BeginQTE()
     {
         DisableMovement();
+        WallRunSound.Stop();
         _wallRunning = false;
         qte = true;
     }
@@ -228,6 +236,7 @@ public class PlayerMovementController : MonoBehaviour
         Direction = 1;
         _canMove = true;
         shrink = true;
+        ShrinkSound.Play();
         Jump();
     }
 

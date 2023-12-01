@@ -30,6 +30,8 @@ public class Player : MonoBehaviour
     public delegate void Level();
     public static event Level OnPauseEnter;
 
+    public AudioSource LandSound;
+
     private void Start()
     {
         Collision = GetComponent<PlayerCollisionHandler>();
@@ -61,9 +63,10 @@ public class Player : MonoBehaviour
                 {
                     SetState(PlayerState.Idle);
                 }
-                else if (Movement.Rb2d.velocity.x == 0 && Movement.IsWaiting)
+                else if (Movement.Rb2d.velocity.x == 0 && (Movement.IsWaiting && CurrentState != PlayerState.Landing))
                 {
                     SetState(PlayerState.Landing);
+                    LandSound.Play();
                 }
                 else if (Movement.Rb2d.velocity.x != 0)
                 {
@@ -94,7 +97,7 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    if (Movement._isWallJumping)
+                    if (Movement._isWallJumping && CurrentState != PlayerState.WallJumping)
                     {
                         SetState(PlayerState.WallJumping);
                     }
