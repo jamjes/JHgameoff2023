@@ -27,11 +27,25 @@ public class PlayerQTEController : MonoBehaviour
     private void OnEnable()
     {
         PlayerCollisionHandler.OnQTEEnter += Run;
+        Player.MuteSoundFX += Mute;
+        Player.UnmuteSoundFX += Unmute;
     }
 
     private void OnDisable()
     {
         PlayerCollisionHandler.OnQTEEnter -= Run;
+        Player.MuteSoundFX -= Mute;
+        Player.UnmuteSoundFX -= Unmute;
+    }
+
+    private void Mute()
+    {
+        Sound.volume = 0;
+    }
+
+    private void Unmute()
+    {
+        Sound.volume = 0.8f;
     }
 
     private void Start()

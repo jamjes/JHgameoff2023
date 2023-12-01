@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.XR;
@@ -30,13 +32,60 @@ public class Player : MonoBehaviour
     public delegate void Level();
     public static event Level OnPauseEnter;
 
+    public delegate void Audio();
+    public static event Audio MuteSoundFX;
+    public static event Audio UnmuteSoundFX;
+
     public AudioSource LandSound;
+    public AudioSource BGMusic;
+
+    private void OnEnable()
+    {
+        PlayerQTEController.OnQTEWin += PitchUpMusic;
+        PlayerCollisionHandler.OnShrinkExit += RevertMusicPitch;
+    }
+
+    private void OnDisable()
+    {
+        PlayerQTEController.OnQTEWin -= PitchUpMusic;
+        PlayerCollisionHandler.OnShrinkExit -= RevertMusicPitch;
+    }
+
+    void PitchUpMusic()
+    {
+        BGMusic.pitch = 1.3f;
+    }
+
+    void RevertMusicPitch()
+    {
+        BGMusic.pitch = 1f;
+    }
 
     private void Start()
     {
         Collision = GetComponent<PlayerCollisionHandler>();
         Movement = GetComponent<PlayerMovementController>();
         Animation = transform.GetChild(0).GetComponent<PlayerAnimationHandler>();
+        if (!Settings.SOUND_FX)
+        {
+            MuteSoundFX();
+            LandSound.volume = 0;
+        }
+        else if (Settings.SOUND_FX)
+        {
+            UnmuteSoundFX();
+            LandSound.volume = .4f;
+        }
+
+        if (!Settings.BG_MUSIC)
+        {
+            BGMusic.volume = 0;
+        }
+        else if (Settings.BG_MUSIC)
+        {
+            BGMusic.volume = .8f;
+            BGMusic.Play();
+        }
     }
 
     private void Update()

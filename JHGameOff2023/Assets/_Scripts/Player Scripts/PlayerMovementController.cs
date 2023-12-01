@@ -40,6 +40,8 @@ public class PlayerMovementController : MonoBehaviour
         PlayerCollisionHandler.OnQTEEnter += BeginQTE;
         PlayerQTEController.OnQTEWin += QTEWin;
         PlayerQTEController.OnQTELoss += QTELoss;
+        Player.MuteSoundFX += Mute;
+        Player.UnmuteSoundFX += Unmute;
     }
 
     private void OnDisable()
@@ -48,6 +50,24 @@ public class PlayerMovementController : MonoBehaviour
         PlayerCollisionHandler.OnQTEEnter -= BeginQTE;
         PlayerQTEController.OnQTEWin -= QTEWin;
         PlayerQTEController.OnQTELoss -= QTELoss;
+        Player.MuteSoundFX -= Mute;
+        Player.UnmuteSoundFX -= Unmute;
+    }
+
+    private void Mute()
+    {
+        BackflipSound.volume = 0;
+        JumpSound.volume = 0;
+        ShrinkSound.volume = 0;
+        WallRunSound.volume = 0;
+    }
+
+    private void Unmute()
+    {
+        BackflipSound.volume = 0.4f;
+        JumpSound.volume = 0.4f;
+        ShrinkSound.volume = 0.8f;
+        WallRunSound.volume = 0.8f;
     }
 
     private void Start()
@@ -254,9 +274,10 @@ public class PlayerMovementController : MonoBehaviour
         if (mode == 0)
         {
             UpdateGravityScale(6);
-            _groundSpeed = 6;
+            _groundSpeed = 5;
             _jumpForce = 15f;
             _wallRunSpeed = 10;
+            _reboundMoveSpeed = 8f;
         }
         else
         {
@@ -264,6 +285,7 @@ public class PlayerMovementController : MonoBehaviour
             _groundSpeed = 10;
             _jumpForce = 20f;
             _wallRunSpeed = 15;
+            _reboundMoveSpeed = 12f;
         }
     }
 

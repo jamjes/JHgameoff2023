@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f6f3d0e3d030ac41b30b199b0236e78, type: 3}
   m_Name: Settings
   m_EditorClassIdentifier: 
-  SOUND_FX: 1
-  BG_MUSIC: 1
-  PAUSED: 0
+  SOUND_FX: 0
+  BG_MUSIC: 0

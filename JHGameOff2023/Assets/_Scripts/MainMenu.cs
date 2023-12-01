@@ -14,11 +14,17 @@ public class MainMenu : MonoBehaviour
     public TextMeshProUGUI MusicLabel;
     public TextMeshProUGUI SoundLabel;
 
+    public AudioSource Music;
+    public AudioSource SoundFX;
+
 
     private void Start()
     {
         MainPanel.SetActive(true);
         MenuPanel.SetActive(false);
+        Music.Play();
+        Settings.BG_MUSIC = true;
+        Settings.SOUND_FX = true;
     }
 
     public void LoadGame()
@@ -44,6 +50,7 @@ public class MainMenu : MonoBehaviour
         if (Settings.SOUND_FX)
         {
             SoundLabel.text = "O";
+            SoundFX.Play();
         }
         else
         {
@@ -57,10 +64,12 @@ public class MainMenu : MonoBehaviour
         if (Settings.BG_MUSIC)
         {
             MusicLabel.text = "O";
+            Music.volume = .8f;
         }
         else
         {
             MusicLabel.text = "X";
+            Music.volume = 0f;
         }
     }
 
