@@ -262,7 +262,6 @@ public class PlayerMovementController : MonoBehaviour
 
     private void QTEWin()
     {
-        Debug.Log("QTE Win");
         qte = false;
         Direction = 1;
         CanMove = true;

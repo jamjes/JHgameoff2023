@@ -63,6 +63,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        Cursor.visible = false;
         Collision = GetComponent<PlayerCollisionHandler>();
         Movement = GetComponent<PlayerMovementController>();
         Animation = transform.GetChild(0).GetComponent<PlayerAnimationHandler>();
@@ -113,7 +114,6 @@ public class Player : MonoBehaviour
         
         if (Movement.qte)
         {
-            Debug.Log("QTE!!");
             SetState(PlayerState.WallSliding);
         }
         else
