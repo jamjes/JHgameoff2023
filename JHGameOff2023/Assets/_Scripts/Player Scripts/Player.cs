@@ -84,11 +84,17 @@ public class Player : MonoBehaviour
         else if (Settings.BG_MUSIC)
         {
             BGMusic.volume = .8f;
-            BGMusic.Play();
+            StartCoroutine(DelayedBGMusic());
         }
 
         CurrentState = PlayerState.Idle;
         
+    }
+
+    IEnumerator DelayedBGMusic()
+    {
+        yield return new WaitForSeconds(3);
+        BGMusic.Play();
     }
 
     
