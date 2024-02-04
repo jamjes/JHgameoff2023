@@ -39,6 +39,8 @@ public class Player : MonoBehaviour
     public AudioSource LandSound;
     public AudioSource BGMusic;
 
+    private bool pauseStatus = false;
+
     private void OnEnable()
     {
         PlayerQTEController.OnQTEWin += PitchUpMusic;
@@ -111,6 +113,20 @@ public class Player : MonoBehaviour
             //}
         //}
         
+        if (Input.GetButtonDown("Pause"))
+        {
+            if (pauseStatus == false)
+            {
+                //GameManager.instance.StopTimer();
+                pauseStatus = true;
+            }
+            else
+            {
+                //GameManager.instance.StartTimer();
+                pauseStatus = false;
+            }
+        }
+
         
         if (Movement.qte)
         {

@@ -8,6 +8,8 @@ TagManager:
   - VentIn
   - VentOut
   - End
+  - Vent
+  - Coin
   layers:
   - Default
   - TransparentFX

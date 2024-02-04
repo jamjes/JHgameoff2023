@@ -57,20 +57,22 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Mute()
     {
-        BackflipSound.volume = 0;
-        JumpSound.volume = 0;
-        ShrinkSound.volume = 0;
-        WallRunSound.volume = 0;
+        //BackflipSound.volume = 0;
+        //JumpSound.volume = 0;
+        //ShrinkSound.volume = 0;
+        //WallRunSound.volume = 0;
     }
 
     private void Unmute()
     {
-        BackflipSound.volume = 0.4f;
-        JumpSound.volume = 0.4f;
-        ShrinkSound.volume = 0.8f;
-        WallRunSound.volume = 0.8f;
+        //BackflipSound.volume = 0.4f;
+        //JumpSound.volume = 0.4f;
+        //ShrinkSound.volume = 0.8f;
+        //WallRunSound.volume = 0.8f;
     }
 
+
+    
     private void Start()
     {
         Rb2d = GetComponent<Rigidbody2D>();

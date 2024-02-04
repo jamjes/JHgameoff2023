@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/StartMenu.unity
     guid: f1fede4e20386274ea1b2eb0172bde91
   - enabled: 1
-    path: Assets/Blockout of ideas/Level 1.unity
+    path: Assets/Scenes/Level 1.unity
     guid: 82c2f57c91e52a04ca03b39c064013e1
   - enabled: 1
     path: Assets/Scenes/Credits.unity
